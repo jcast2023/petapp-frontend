@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://petapp-backend-bugk.onrender.com'
+  apiUrl: 'https://petapp-backend-bugk.onrender.com/api'
 };
