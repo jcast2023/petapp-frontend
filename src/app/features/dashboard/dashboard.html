@@ -1,0 +1,57 @@
+<main class="dashboard">
+  <header class="dashboard-header">
+    <div>
+      <span class="eyebrow">Panel principal</span>
+      <h1>Bienvenido a PetApp 🐾</h1>
+      <p>Administra la salud y el seguimiento de tus mascotas.</p>
+    </div>
+
+    <button type="button" (click)="cerrarSesion()">
+      Cerrar sesión
+    </button>
+  </header>
+
+  <section class="dashboard-grid">
+    <a routerLink="/mascotas" class="dashboard-card">
+      <span class="card-icon">🐶</span>
+      <h2>Mascotas</h2>
+      <p>Registra y administra tus mascotas.</p>
+    </a>
+
+    <a routerLink="/banos" class="dashboard-card">
+      <span class="card-icon">🛁</span>
+      <h2>Baños</h2>
+      <p>Controla los baños de tus mascotas.</p>
+    </a>
+
+    <a routerLink="/vacunas" class="dashboard-card">
+      <span class="card-icon">💉</span>
+      <h2>Vacunas</h2>
+      <p>Controla las vacunas y próximas dosis.</p>
+    </a>
+
+    <a routerLink="/desparasitaciones" class="dashboard-card">
+      <span class="card-icon">🧪</span>
+      <h2>Desparasitaciones</h2>
+      <p>Controla desparasitaciones internas y externas.</p>
+    </a>
+
+    <a routerLink="/pesos" class="dashboard-card">
+      <span class="card-icon">⚖️</span>
+      <h2>Peso</h2>
+      <p>Consulta la evolución del peso.</p>
+    </a>
+
+    <a routerLink="/historial" class="dashboard-card">
+      <span class="card-icon">🩺</span>
+      <h2>Historial médico</h2>
+      <p>Guarda las consultas y tratamientos.</p>
+    </a>
+
+    <a routerLink="/videos" class="dashboard-card">
+      <span class="card-icon">🎬</span>
+      <h2>Videos de obediencia</h2>
+      <p>Catálogo de videos para entrenamiento.</p>
+    </a>
+  </section>
+</main>

@@ -1,0 +1,55 @@
+<div class="listado-vacunas">
+  <div class="header">
+    <h2>Control de Vacunas</h2>
+    <a routerLink="/vacunas/crear" class="btn btn-primary">+ Registrar Vacuna</a>
+  </div>
+
+  @if (cargando()) {
+    <div class="loading">Cargando registros...</div>
+  }
+
+  @if (error()) {
+    <div class="error">{{ error() }}</div>
+  }
+
+  @if (!cargando() && !error()) {
+    @if (vacunas().length === 0) {
+      <div class="empty-state">
+        <p>No hay registros de vacunas.</p>
+        <a routerLink="/vacunas/crear" class="btn btn-primary">Registrar primera vacuna</a>
+      </div>
+    } @else {
+      <div class="tabla-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Vacuna</th>
+              <th>Mascota</th>
+              <th>Fecha Aplicación</th>
+              <th>Próxima Dosis</th>
+              <th>Veterinario</th>
+              <th>Notas</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (vacuna of vacunas(); track vacuna.id) {
+              <tr>
+                <td><strong>{{ vacuna.nombreVacuna }}</strong></td>
+                <td>{{ vacuna.mascota?.nombre || 'Sin mascota' }}</td>
+                <td>{{ vacuna.fechaAplicacion | date:'dd/MM/yyyy' }}</td>
+                <td>{{ vacuna.fechaProximaDosis | date:'dd/MM/yyyy' }}</td>
+                <td>{{ vacuna.veterinario || '-' }}</td>
+                <td>{{ vacuna.notas || '-' }}</td>
+                <td class="acciones">
+                  <a [routerLink]="['/vacunas/editar', vacuna.id]" class="btn btn-sm btn-secondary">Editar</a>
+                  <button (click)="eliminarVacuna(vacuna.id)" class="btn btn-sm btn-danger">Eliminar</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

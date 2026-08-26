@@ -1,0 +1,50 @@
+<div class="listado-mascotas">
+  <div class="header">
+    <h2>Mis Mascotas</h2>
+    <a routerLink="/mascotas/crear" class="btn btn-primary">+ Registrar Mascota</a>
+  </div>
+
+  @if (cargando()) {
+    <div class="loading">Cargando mascotas...</div>
+  }
+
+  @if (error()) {
+    <div class="error">{{ error() }}</div>
+  }
+
+  @if (!cargando() && !error()) {
+    @if (mascotas().length === 0) {
+      <div class="empty-state">
+        <p>No tienes mascotas registradas.</p>
+        <a routerLink="/mascotas/crear" class="btn btn-primary">Registrar tu primera mascota</a>
+      </div>
+    } @else {
+      <div class="grid-mascotas">
+        @for (mascota of mascotas(); track mascota.id) {
+          <div class="card-mascota">
+            @if (mascota.fotoUrl) {
+              <img [src]="mascota.fotoUrl" [alt]="mascota.nombre" class="foto">
+            } @else {
+              <div class="foto-placeholder">
+                <span>🐾</span>
+              </div>
+            }
+
+            <div class="info">
+              <h3>{{ mascota.nombre }}</h3>
+              <p><strong>Especie:</strong> {{ mascota.especie }}</p>
+              <p><strong>Raza:</strong> {{ mascota.raza || 'No especificada' }}</p>
+              <p><strong>Sexo:</strong> {{ mascota.sexo || 'No especificado' }}</p>
+              <p><strong>Nacimiento:</strong> {{ mascota.fechaNacimiento | date:'dd/MM/yyyy' }}</p>
+            </div>
+
+            <div class="acciones">
+              <a [routerLink]="['/mascotas/editar', mascota.id]" class="btn btn-secondary">Editar</a>
+              <button (click)="eliminarMascota(mascota.id)" class="btn btn-danger">Eliminar</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

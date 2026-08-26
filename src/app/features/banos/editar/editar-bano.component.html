@@ -1,0 +1,42 @@
+<div class="editar-bano">
+  <h2>Editar Registro de Baño</h2>
+
+  <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="mascotaId">Mascota *</label>
+      <select id="mascotaId" formControlName="mascotaId">
+        <option value="">Seleccionar mascota...</option>
+        @for (mascota of mascotas; track mascota.id) {
+          <option [value]="mascota.id">{{ mascota.nombre }} ({{ mascota.especie }})</option>
+        }
+      </select>
+      @if (formulario.get('mascotaId')?.invalid && formulario.get('mascotaId')?.touched) {
+        <small class="error-text">Debes seleccionar una mascota</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="fecha">Fecha del Baño *</label>
+      <input id="fecha" type="date" formControlName="fecha">
+      @if (formulario.get('fecha')?.invalid && formulario.get('fecha')?.touched) {
+        <small class="error-text">La fecha es requerida</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="notas">Notas</label>
+      <textarea id="notas" formControlName="notas" rows="3" placeholder="Observaciones del baño..."></textarea>
+    </div>
+
+    @if (error) {
+      <div class="error-message">{{ error }}</div>
+    }
+
+    <div class="acciones">
+      <a routerLink="/banos" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary" [disabled]="cargando || cargandoMascotas">
+        {{ cargando ? 'Guardando...' : 'Actualizar Registro' }}
+      </button>
+    </div>
+  </form>
+</div>

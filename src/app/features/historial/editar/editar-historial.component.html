@@ -1,0 +1,117 @@
+<div class="editar-historial">
+  <h2>Editar Consulta Médica</h2>
+
+  @if (error()) {
+    <div class="error-message">{{ error() }}</div>
+  }
+
+  <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="mascotaBusqueda">Mascota *</label>
+
+      <div class="search-container">
+        <input
+          id="mascotaBusqueda"
+          type="text"
+          [value]="filtroBusqueda()"
+          (input)="onBuscar($event)"
+          placeholder="Buscar mascota por nombre, especie o raza..."
+          class="search-input"
+          [disabled]="cargandoMascotas()"
+        />
+
+        @if (filtroBusqueda() && mascotasFiltradas().length > 0) {
+          <div class="search-results">
+            @for (mascota of mascotasFiltradas(); track mascota.id) {
+              <div
+                class="search-item"
+                (click)="seleccionarMascota(mascota.id)"
+              >
+                <span class="search-item-icon">🐾</span>
+                <span class="search-item-nombre">{{ mascota.nombre }}</span>
+                <span class="search-item-detalle">{{ mascota.especie }} {{ mascota.raza ? '- ' + mascota.raza : '' }}</span>
+              </div>
+            }
+          </div>
+        }
+
+        @if (filtroBusqueda() && mascotasFiltradas().length === 0 && !cargandoMascotas()) {
+          <div class="search-empty">
+            No se encontraron mascotas.
+            <a routerLink="/mascotas/crear">Registrar una nueva mascota</a>
+          </div>
+        }
+
+        @if (cargandoMascotas()) {
+          <div class="search-loading">Cargando mascotas...</div>
+        }
+      </div>
+
+      <input type="hidden" formControlName="mascotaId" />
+
+      @if (formulario.get('mascotaId')?.value) {
+        <div class="mascota-seleccionada">
+          <span>✅ Mascota seleccionada: </span>
+          @for (mascota of mascotas(); track mascota.id) {
+            @if (mascota.id === +formulario.get('mascotaId')?.value!) {
+              <strong>{{ mascota.nombre }}</strong> ({{ mascota.especie }} {{ mascota.raza ? '- ' + mascota.raza : '' }})
+            }
+          }
+          <button type="button" (click)="limpiarSeleccion()" class="btn-clear">✕</button>
+        </div>
+      }
+
+      @if (formulario.get('mascotaId')?.invalid && formulario.get('mascotaId')?.touched) {
+        <small class="error-text">Debes seleccionar una mascota</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="fecha">Fecha de la Consulta *</label>
+      <input id="fecha" type="date" formControlName="fecha">
+      @if (formulario.get('fecha')?.invalid && formulario.get('fecha')?.touched) {
+        <small class="error-text">La fecha es requerida</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="motivoConsulta">Motivo de la Consulta *</label>
+      <input id="motivoConsulta" type="text" formControlName="motivoConsulta" placeholder="Ej: Vómitos, diarrea, tos, etc.">
+      @if (formulario.get('motivoConsulta')?.invalid && formulario.get('motivoConsulta')?.touched) {
+        <small class="error-text">El motivo es requerido (mínimo 3 caracteres)</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="diagnostico">Diagnóstico *</label>
+      <textarea id="diagnostico" formControlName="diagnostico" rows="3" placeholder="Descripción del diagnóstico..."></textarea>
+      @if (formulario.get('diagnostico')?.invalid && formulario.get('diagnostico')?.touched) {
+        <small class="error-text">El diagnóstico es requerido (mínimo 3 caracteres)</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="tratamiento">Tratamiento</label>
+      <textarea id="tratamiento" formControlName="tratamiento" rows="3" placeholder="Descripción del tratamiento recetado..."></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group half">
+        <label for="veterinario">Veterinario</label>
+        <input id="veterinario" type="text" formControlName="veterinario" placeholder="Nombre del veterinario">
+      </div>
+
+      <div class="form-group half">
+        <label for="clinica">Clínica</label>
+        <input id="clinica" type="text" formControlName="clinica" placeholder="Nombre de la clínica">
+      </div>
+    </div>
+
+    <div class="acciones">
+      <a routerLink="/historial" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary" [disabled]="cargando() || cargandoMascotas()">
+        {{ cargando() ? 'Guardando...' : 'Actualizar Consulta' }}
+      </button>
+    </div>
+  </form>
+</div>

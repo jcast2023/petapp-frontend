@@ -1,0 +1,97 @@
+<div class="crear-bano">
+  <h2>Registrar Baño</h2>
+
+  @if (error()) {
+    <div class="error-message">{{ error() }}</div>
+  }
+
+  <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="mascotaBusqueda">Mascota *</label>
+
+      <!-- Campo de búsqueda -->
+      <div class="search-container">
+        <input
+          id="mascotaBusqueda"
+          type="text"
+          [value]="filtroBusqueda()"
+          (input)="onBuscar($event)"
+          placeholder="Buscar mascota por nombre, especie o raza..."
+          class="search-input"
+          [disabled]="cargandoMascotas()"
+        />
+
+        <!-- Lista de resultados de búsqueda -->
+        @if (filtroBusqueda() && mascotasFiltradas().length > 0) {
+          <div class="search-results">
+            @for (mascota of mascotasFiltradas(); track mascota.id) {
+              <div
+                class="search-item"
+                (click)="seleccionarMascota(mascota.id)"
+              >
+                <span class="search-item-icon">🐾</span>
+                <span class="search-item-nombre">{{ mascota.nombre }}</span>
+                <span class="search-item-detalle">{{ mascota.especie }} {{ mascota.raza ? '- ' + mascota.raza : '' }}</span>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Mensaje cuando no hay resultados -->
+        @if (filtroBusqueda() && mascotasFiltradas().length === 0 && !cargandoMascotas()) {
+          <div class="search-empty">
+            No se encontraron mascotas.
+            <a routerLink="/mascotas/crear">Registrar una nueva mascota</a>
+          </div>
+        }
+
+        <!-- Indicador de carga -->
+        @if (cargandoMascotas()) {
+          <div class="search-loading">Cargando mascotas...</div>
+        }
+      </div>
+
+      <!-- Campo oculto para el ID de la mascota seleccionada -->
+      <input type="hidden" formControlName="mascotaId" />
+
+      <!-- Mostrar la mascota seleccionada -->
+      @if (formulario.get('mascotaId')?.value) {
+        <div class="mascota-seleccionada">
+          <span>✅ Mascota seleccionada: </span>
+          @for (mascota of mascotas(); track mascota.id) {
+            @if (mascota.id === +formulario.get('mascotaId')?.value!) {
+              <strong>{{ mascota.nombre }}</strong> ({{ mascota.especie }} {{ mascota.raza ? '- ' + mascota.raza : '' }})
+            }
+          }
+          <button type="button" (click)="limpiarSeleccion()" class="btn-clear">
+            ✕
+          </button>
+        </div>
+      }
+
+      @if (formulario.get('mascotaId')?.invalid && formulario.get('mascotaId')?.touched) {
+        <small class="error-text">Debes seleccionar una mascota</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="fecha">Fecha del Baño *</label>
+      <input id="fecha" type="date" formControlName="fecha">
+      @if (formulario.get('fecha')?.invalid && formulario.get('fecha')?.touched) {
+        <small class="error-text">La fecha es requerida</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="notas">Notas</label>
+      <textarea id="notas" formControlName="notas" rows="3" placeholder="Observaciones del baño..."></textarea>
+    </div>
+
+    <div class="acciones">
+      <a routerLink="/banos" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary" [disabled]="cargando() || cargandoMascotas()">
+        {{ cargando() ? 'Guardando...' : 'Registrar Baño' }}
+      </button>
+    </div>
+  </form>
+</div>

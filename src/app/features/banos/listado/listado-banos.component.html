@@ -1,0 +1,49 @@
+<div class="listado-banos">
+  <div class="header">
+    <h2>Control de Baños</h2>
+    <a routerLink="/banos/crear" class="btn btn-primary">+ Registrar Baño</a>
+  </div>
+
+  @if (cargando()) {
+    <div class="loading">Cargando registros...</div>
+  }
+
+  @if (error()) {
+    <div class="error">{{ error() }}</div>
+  }
+
+  @if (!cargando() && !error()) {
+    @if (banos().length === 0) {
+      <div class="empty-state">
+        <p>No hay registros de baños.</p>
+        <a routerLink="/banos/crear" class="btn btn-primary">Registrar primer baño</a>
+      </div>
+    } @else {
+      <div class="tabla-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Mascota</th>
+              <th>Notas</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (bano of banos(); track bano.id) {
+              <tr>
+                <td>{{ bano.fecha | date:'dd/MM/yyyy' }}</td>
+                <td>{{ bano.mascota.nombre || 'Mascota ID: ' + bano.mascota.id }}</td>
+                <td>{{ bano.notas || 'Sin notas' }}</td>
+                <td class="acciones">
+                  <a [routerLink]="['/banos/editar', bano.id]" class="btn btn-sm btn-secondary">Editar</a>
+                  <button (click)="eliminarBano(bano.id)" class="btn btn-sm btn-danger">Eliminar</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

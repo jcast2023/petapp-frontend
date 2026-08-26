@@ -1,0 +1,77 @@
+<main class="auth-page">
+  <section class="auth-card">
+    <div class="brand">
+      <span class="brand-icon">🐾</span>
+      <h1>PetApp</h1>
+      <p>Cuida mejor la salud de tu mascota</p>
+    </div>
+
+    <h2>Iniciar sesión</h2>
+
+    @if (mensajeError()) {
+      <div class="error-message" role="alert">
+        {{ mensajeError() }}
+      </div>
+    }
+
+    <form
+      [formGroup]="formulario"
+      (ngSubmit)="iniciarSesion()"
+      novalidate
+    >
+      <div class="form-field">
+        <label for="correo">Correo electrónico</label>
+
+        <input
+          id="correo"
+          type="email"
+          formControlName="correo"
+          autocomplete="email"
+          placeholder="correo@ejemplo.com"
+        />
+
+        @if (
+          formulario.controls.correo.invalid &&
+          formulario.controls.correo.touched
+        ) {
+          <small>Ingresa un correo válido.</small>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="contrasena">Contraseña</label>
+
+        <input
+          id="contrasena"
+          type="password"
+          formControlName="contrasena"
+          autocomplete="current-password"
+          placeholder="Mínimo 6 caracteres"
+        />
+
+        @if (
+          formulario.controls.contrasena.invalid &&
+          formulario.controls.contrasena.touched
+        ) {
+          <small>La contraseña debe tener al menos 6 caracteres.</small>
+        }
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="formulario.invalid || cargando()"
+      >
+        @if (cargando()) {
+          Iniciando sesión...
+        } @else {
+          Iniciar sesión
+        }
+      </button>
+    </form>
+
+    <p class="auth-footer">
+      ¿No tienes una cuenta?
+      <a routerLink="/registro">Crear cuenta</a>
+    </p>
+  </section>
+</main>

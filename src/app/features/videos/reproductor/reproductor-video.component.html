@@ -1,0 +1,55 @@
+<div class="reproductor-container">
+  <div class="reproductor-header">
+    <button (click)="volver()" class="btn-back">← Volver</button>
+    @if (video()) {
+      <h1>{{ video()?.titulo }}</h1>
+    }
+  </div>
+
+  @if (cargando()) {
+    <div class="loading">Cargando video...</div>
+  }
+
+  @if (error()) {
+    <div class="error">{{ error() }}</div>
+  }
+
+  @if (video() && urlSegura()) {
+    <div class="video-wrapper">
+      <iframe
+        [src]="urlSegura()"
+        title="{{ video()?.titulo }}"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <div class="video-info">
+      <div class="info-row">
+        <span class="label">Comando:</span>
+        <span class="value">{{ video()?.comando || '-' }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Nivel:</span>
+        <span class="value">
+          <span class="nivel-badge" [class]="getNivelClass(video()?.nivel || '')">
+            {{ video()?.nivel || 'Sin nivel' }}
+          </span>
+        </span>
+      </div>
+      @if (video()?.duracionSegundos) {
+        <div class="info-row">
+          <span class="label">Duración:</span>
+          <span class="value">{{ formatearDuracion(video()?.duracionSegundos || 0) }}</span>
+        </div>
+      }
+      @if (video()?.descripcion) {
+        <div class="info-row">
+          <span class="label">Descripción:</span>
+          <p class="descripcion">{{ video()?.descripcion }}</p>
+        </div>
+      }
+    </div>
+  }
+</div>

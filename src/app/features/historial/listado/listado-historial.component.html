@@ -1,0 +1,55 @@
+<div class="listado-historial">
+  <div class="header">
+    <h2>Historial Médico</h2>
+    <a routerLink="/historial/crear" class="btn btn-primary">+ Registrar Consulta</a>
+  </div>
+
+  @if (cargando()) {
+    <div class="loading">Cargando registros...</div>
+  }
+
+  @if (error()) {
+    <div class="error">{{ error() }}</div>
+  }
+
+  @if (!cargando() && !error()) {
+    @if (historiales().length === 0) {
+      <div class="empty-state">
+        <p>No hay registros en el historial médico.</p>
+        <a routerLink="/historial/crear" class="btn btn-primary">Registrar primera consulta</a>
+      </div>
+    } @else {
+      <div class="tabla-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Mascota</th>
+              <th>Motivo</th>
+              <th>Diagnóstico</th>
+              <th>Veterinario</th>
+              <th>Clínica</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (historial of historiales(); track historial.id) {
+              <tr>
+                <td>{{ historial.fecha | date:'dd/MM/yyyy' }}</td>
+                <td><strong>{{ historial.mascota.nombre }}</strong></td>
+                <td>{{ truncarTexto(historial.motivoConsulta, 30) }}</td>
+                <td>{{ truncarTexto(historial.diagnostico, 30) }}</td>
+                <td>{{ historial.veterinario || '-' }}</td>
+                <td>{{ historial.clinica || '-' }}</td>
+                <td class="acciones">
+                  <a [routerLink]="['/historial/editar', historial.id]" class="btn btn-sm btn-secondary">Editar</a>
+                  <button (click)="eliminarHistorial(historial.id)" class="btn btn-sm btn-danger">Eliminar</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

@@ -1,0 +1,59 @@
+<div class="crear-mascota">
+  <h2>Registrar Mascota</h2>
+
+  <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="nombre">Nombre *</label>
+      <input id="nombre" type="text" formControlName="nombre" placeholder="Nombre de la mascota">
+      @if (formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched) {
+        <small class="error-text">El nombre es requerido (mínimo 2 caracteres)</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="especie">Especie *</label>
+      <input id="especie" type="text" formControlName="especie" placeholder="Perro, Gato, etc.">
+      @if (formulario.get('especie')?.invalid && formulario.get('especie')?.touched) {
+        <small class="error-text">La especie es requerida</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="raza">Raza</label>
+      <input id="raza" type="text" formControlName="raza" placeholder="Raza de la mascota">
+    </div>
+
+    <div class="form-group">
+      <label for="fechaNacimiento">Fecha de Nacimiento *</label>
+      <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento">
+      @if (formulario.get('fechaNacimiento')?.invalid && formulario.get('fechaNacimiento')?.touched) {
+        <small class="error-text">La fecha de nacimiento es requerida</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="sexo">Sexo</label>
+      <select id="sexo" formControlName="sexo">
+        <option value="">Seleccionar...</option>
+        <option value="Macho">Macho</option>
+        <option value="Hembra">Hembra</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="fotoUrl">URL de la Foto</label>
+      <input id="fotoUrl" type="url" formControlName="fotoUrl" placeholder="https://ejemplo.com/foto.jpg">
+    </div>
+
+    @if (error) {
+      <div class="error-message">{{ error }}</div>
+    }
+
+    <div class="acciones">
+      <a routerLink="/mascotas" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary" [disabled]="cargando">
+        {{ cargando ? 'Guardando...' : 'Registrar Mascota' }}
+      </button>
+    </div>
+  </form>
+</div>

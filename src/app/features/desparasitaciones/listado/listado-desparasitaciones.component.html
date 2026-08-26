@@ -1,0 +1,59 @@
+<div class="listado-desparasitaciones">
+  <div class="header">
+    <h2>Control de Desparasitaciones</h2>
+    <a routerLink="/desparasitaciones/crear" class="btn btn-primary">+ Registrar Desparasitación</a>
+  </div>
+
+  @if (cargando()) {
+    <div class="loading">Cargando registros...</div>
+  }
+
+  @if (error()) {
+    <div class="error">{{ error() }}</div>
+  }
+
+  @if (!cargando() && !error()) {
+    @if (desparasitaciones().length === 0) {
+      <div class="empty-state">
+        <p>No hay registros de desparasitaciones.</p>
+        <a routerLink="/desparasitaciones/crear" class="btn btn-primary">Registrar primera desparasitación</a>
+      </div>
+    } @else {
+      <div class="tabla-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Mascota</th>
+              <th>Tipo</th>
+              <th>Fecha Aplicación</th>
+              <th>Próxima Dosis</th>
+              <th>Notas</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (desparasitacion of desparasitaciones(); track desparasitacion.id) {
+              <tr>
+                <td><strong>{{ desparasitacion.producto }}</strong></td>
+                <td>{{ desparasitacion.mascota.nombre }}</td>
+                <td>
+                  <span class="tipo-badge" [class]="getTipoClass(desparasitacion.tipo)">
+                    {{ desparasitacion.tipo }}
+                  </span>
+                </td>
+                <td>{{ desparasitacion.fechaAplicacion | date:'dd/MM/yyyy' }}</td>
+                <td>{{ desparasitacion.fechaProximaDosis | date:'dd/MM/yyyy' }}</td>
+                <td>{{ desparasitacion.notas || '-' }}</td>
+                <td class="acciones">
+                  <a [routerLink]="['/desparasitaciones/editar', desparasitacion.id]" class="btn btn-sm btn-secondary">Editar</a>
+                  <button (click)="eliminarDesparasitacion(desparasitacion.id)" class="btn btn-sm btn-danger">Eliminar</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

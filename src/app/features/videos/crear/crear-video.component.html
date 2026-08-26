@@ -1,0 +1,76 @@
+<div class="crear-video">
+  <h2>Agregar Video de Obediencia</h2>
+
+  @if (error()) {
+    <div class="error-message">{{ error() }}</div>
+  }
+
+  <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="titulo">Título *</label>
+      <input id="titulo" type="text" formControlName="titulo" placeholder="Ej: Cómo enseñar 'Sentado'">
+      @if (formulario.get('titulo')?.invalid && formulario.get('titulo')?.touched) {
+        <small class="error-text">El título es requerido (mínimo 3 caracteres)</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" formControlName="descripcion" rows="3" placeholder="Breve descripción del video..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="urlVideo">URL del Video *</label>
+      <input id="urlVideo" type="url" formControlName="urlVideo" placeholder="https://www.youtube.com/watch?v=...">
+      @if (formulario.get('urlVideo')?.invalid && formulario.get('urlVideo')?.touched) {
+        <small class="error-text">Ingresa una URL válida (ej: https://...)</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="comando">Comando *</label>
+      <input id="comando" type="text" formControlName="comando" placeholder="Ej: Sentado, Quieto, Ven, etc.">
+      @if (formulario.get('comando')?.invalid && formulario.get('comando')?.touched) {
+        <small class="error-text">El comando es requerido</small>
+      }
+    </div>
+
+    <div class="form-row">
+      <div class="form-group half">
+        <label for="nivel">Nivel *</label>
+        <select id="nivel" formControlName="nivel">
+          <option value="">Seleccionar nivel...</option>
+          @for (nivel of niveles; track nivel) {
+            <option [value]="nivel">{{ nivel }}</option>
+          }
+        </select>
+        @if (formulario.get('nivel')?.invalid && formulario.get('nivel')?.touched) {
+          <small class="error-text">Selecciona un nivel</small>
+        }
+      </div>
+
+      <div class="form-group half">
+        <label for="duracionSegundos">Duración (segundos) *</label>
+        <input id="duracionSegundos" type="number" min="1" formControlName="duracionSegundos" placeholder="Ej: 120">
+        @if (formulario.get('duracionSegundos')?.invalid && formulario.get('duracionSegundos')?.touched) {
+          <small class="error-text">La duración es requerida (mínimo 1 segundo)</small>
+        }
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="miniaturaUrl">URL de Miniatura</label>
+      <input id="miniaturaUrl" type="url" formControlName="miniaturaUrl" placeholder="https://... (opcional)">
+      @if (formulario.get('miniaturaUrl')?.invalid && formulario.get('miniaturaUrl')?.touched) {
+        <small class="error-text">Ingresa una URL válida</small>
+      }
+    </div>
+
+    <div class="acciones">
+      <a routerLink="/videos" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary" [disabled]="cargando()">
+        {{ cargando() ? 'Guardando...' : 'Agregar Video' }}
+      </button>
+    </div>
+  </form>
+</div>

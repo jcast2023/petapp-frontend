@@ -1,0 +1,60 @@
+<div class="listado-videos">
+  <div class="header">
+    <h2>🎬 Videos de Obediencia</h2>
+    <a routerLink="/videos/crear" class="btn btn-primary">+ Agregar Video</a>
+  </div>
+
+  @if (cargando()) {
+    <div class="loading">Cargando videos...</div>
+  }
+
+  @if (error()) {
+    <div class="error">{{ error() }}</div>
+  }
+
+  @if (!cargando() && !error()) {
+    @if (videos().length === 0) {
+      <div class="empty-state">
+        <p>No hay videos en el catálogo.</p>
+        <a routerLink="/videos/crear" class="btn btn-primary">Agregar primer video</a>
+      </div>
+    } @else {
+      <div class="grid-videos">
+        @for (video of videos(); track video.id) {
+          <div class="card-video">
+            <div class="video-thumbnail" (click)="verVideo(video.id)">
+              @if (video.miniaturaUrl) {
+                <img [src]="video.miniaturaUrl" [alt]="video.titulo" loading="lazy">
+              } @else {
+                <div class="thumbnail-placeholder">
+                  <span>🎥</span>
+                </div>
+              }
+              <span class="duracion">{{ formatearDuracion(video.duracionSegundos) }}</span>
+              <div class="play-overlay">
+                <span>▶</span>
+              </div>
+            </div>
+
+            <div class="video-info">
+              <h3 (click)="verVideo(video.id)">{{ video.titulo }}</h3>
+              <p class="descripcion">{{ video.descripcion || 'Sin descripción' }}</p>
+              <div class="video-meta">
+                <span class="comando">Comando: <strong>{{ video.comando || '-' }}</strong></span>
+                <span class="nivel-badge" [class]="getNivelClass(video.nivel)">
+                  {{ video.nivel || 'Sin nivel' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="video-acciones">
+              <button (click)="verVideo(video.id)" class="btn btn-sm btn-primary">▶ Ver</button>
+              <a [routerLink]="['/videos/editar', video.id]" class="btn btn-sm btn-secondary">Editar</a>
+              <button (click)="eliminarVideo(video.id)" class="btn btn-sm btn-danger">Eliminar</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

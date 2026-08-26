@@ -1,0 +1,51 @@
+<div class="listado-pesos">
+  <div class="header">
+    <h2>Registro de Peso</h2>
+    <a routerLink="/pesos/crear" class="btn btn-primary">+ Registrar Peso</a>
+  </div>
+
+  @if (cargando()) {
+    <div class="loading">Cargando registros...</div>
+  }
+
+  @if (error()) {
+    <div class="error">{{ error() }}</div>
+  }
+
+  @if (!cargando() && !error()) {
+    @if (pesos().length === 0) {
+      <div class="empty-state">
+        <p>No hay registros de peso.</p>
+        <a routerLink="/pesos/crear" class="btn btn-primary">Registrar primer peso</a>
+      </div>
+    } @else {
+      <div class="tabla-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Mascota</th>
+              <th>Fecha</th>
+              <th>Peso (kg)</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (peso of pesos(); track peso.id) {
+              <tr>
+                <td><strong>{{ peso.mascota.nombre }}</strong></td>
+                <td>{{ peso.fecha | date:'dd/MM/yyyy' }}</td>
+                <td>
+                  <span class="peso-valor">{{ peso.pesoKg | number:'1.1-1' }} kg</span>
+                </td>
+                <td class="acciones">
+                  <a [routerLink]="['/pesos/editar', peso.id]" class="btn btn-sm btn-secondary">Editar</a>
+                  <button (click)="eliminarPeso(peso.id)" class="btn btn-sm btn-danger">Eliminar</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>
