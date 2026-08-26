@@ -6,7 +6,7 @@ import {
   provideHttpClient,
   withInterceptors
 } from '@angular/common/http';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withHashLocation } from '@angular/router';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
@@ -14,7 +14,8 @@ import { authInterceptor } from './core/interceptors/auth.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    // 👇 AGREGAR withHashLocation() AQUÍ
+    provideRouter(routes, withHashLocation()),
     provideHttpClient(
       withInterceptors([authInterceptor])
     )
