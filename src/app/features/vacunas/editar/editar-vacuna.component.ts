@@ -81,7 +81,7 @@ export class EditarVacunaComponent implements OnInit {
             fechaProximaDosis: vacuna.fechaProximaDosis,
             veterinario: vacuna.veterinario,
             notas: vacuna.notas,
-            mascotaId: String(vacuna.mascota.id)
+            mascotaId: String(vacuna.mascotaId)
           });
         },
         error: () => {

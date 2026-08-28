@@ -1,10 +1,3 @@
-export interface MascotaEnVacuna {
-  id: number;
-  nombre: string;
-  especie: string;
-  raza?: string;
-}
-
 export interface Vacuna {
   id: number;
   nombreVacuna: string;
@@ -12,7 +5,7 @@ export interface Vacuna {
   fechaProximaDosis: string;
   veterinario: string;
   notas: string;
-  mascota: MascotaEnVacuna;
+  mascotaId: number;
 }
 
 export interface CrearVacunaRequest {

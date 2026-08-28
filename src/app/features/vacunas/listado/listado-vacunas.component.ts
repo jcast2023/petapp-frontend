@@ -5,7 +5,9 @@ import { finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { VacunaService } from '../../../core/services/vacuna.service';
+import { MascotaService } from '../../../core/services/mascota.service';
 import { Vacuna } from '../../../core/models/vacuna.models';
+import { Mascota } from '../../../core/models/mascota.models';
 
 @Component({
   selector: 'app-listado-vacunas',
@@ -16,56 +18,63 @@ import { Vacuna } from '../../../core/models/vacuna.models';
 })
 export class ListadoVacunasComponent implements OnInit {
   private readonly vacunaService = inject(VacunaService);
+  private readonly mascotaService = inject(MascotaService);
 
   readonly vacunas = signal<Vacuna[]>([]);
+  readonly mascotas = signal<Mascota[]>([]);
   readonly cargando = signal(false);
   readonly error = signal('');
 
   ngOnInit(): void {
-    console.log('🔄 Inicializando ListadoVacunasComponent');
+    this.cargarMascotas();
     this.cargarVacunas();
   }
 
-  cargarVacunas(): void {
-  this.cargando.set(true);
-  this.error.set('');
-  console.log('📤 Cargando vacunas...');
-
-  this.vacunaService.listar()
-    .pipe(finalize(() => {
-      this.cargando.set(false);
-      console.log('✅ Finalizada carga de vacunas');
-    }))
-    .subscribe({
-      next: (vacunas) => {
-        console.log('📋 Vacunas recibidas:', vacunas);
-        console.log('📊 Cantidad:', vacunas.length);
-        if (vacunas.length > 0) {
-          console.log('🔍 Primera vacuna:', JSON.stringify(vacunas[0], null, 2));
-        }
-        this.vacunas.set(vacunas);
+  cargarMascotas(): void {
+    this.mascotaService.listar().subscribe({
+      next: (mascotas) => {
+        this.mascotas.set(mascotas);
       },
       error: (error: HttpErrorResponse) => {
-        console.error('❌ Error cargando vacunas:', error);
-        this.error.set('Error al cargar las vacunas');
+        console.error('❌ Error cargando mascotas:', error);
       }
     });
-}
+  }
+
+  cargarVacunas(): void {
+    this.cargando.set(true);
+    this.error.set('');
+
+    this.vacunaService.listar()
+      .pipe(finalize(() => {
+        this.cargando.set(false);
+      }))
+      .subscribe({
+        next: (vacunas) => {
+          this.vacunas.set(vacunas);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.error.set('Error al cargar los registros de vacunas: ' + (error.error?.mensaje || error.message));
+        }
+      });
+  }
+
+  obtenerNombreMascota(mascotaId: number): string {
+    const mascota = this.mascotas().find(m => m.id === mascotaId);
+    return mascota ? mascota.nombre : 'Sin mascota';
+  }
 
   eliminarVacuna(id: number): void {
     if (!confirm('¿Estás seguro de eliminar este registro de vacuna?')) {
       return;
     }
 
-    console.log('🗑️ Eliminando vacuna ID:', id);
     this.vacunaService.eliminar(id)
       .subscribe({
         next: () => {
-          console.log('✅ Vacuna eliminada exitosamente');
           this.vacunas.update(lista => lista.filter(v => v.id !== id));
         },
         error: (error: HttpErrorResponse) => {
-          console.error('❌ Error eliminando vacuna:', error);
           this.error.set('Error al eliminar el registro');
         }
       });

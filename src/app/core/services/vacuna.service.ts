@@ -60,7 +60,7 @@ export class VacunaService {
       fechaProximaDosis: vacuna.fechaProximaDosis,
       veterinario: vacuna.veterinario,
       notas: vacuna.notas,
-      mascotaId: vacuna.mascotaId  // ← Cambio: enviar mascotaId directamente
+      mascotaId: vacuna.mascotaId
     };
 
     console.log('📤 Body enviado:', JSON.stringify(body, null, 2));
@@ -80,7 +80,7 @@ export class VacunaService {
       fechaProximaDosis: vacuna.fechaProximaDosis,
       veterinario: vacuna.veterinario,
       notas: vacuna.notas,
-      mascotaId: vacuna.mascotaId  // ← Cambio: enviar mascotaId directamente
+      mascotaId: vacuna.mascotaId
     };
 
     return this.http.put<Vacuna>(`${this.apiUrl}/${id}`, body, {
