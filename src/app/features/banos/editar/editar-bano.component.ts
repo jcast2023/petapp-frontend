@@ -64,7 +64,7 @@ export class EditarBanoComponent implements OnInit {
           this.formulario.patchValue({
             fecha: bano.fecha,
             notas: bano.notas,
-            mascotaId: String(bano.mascota.id) // ← Cambio: bano.mascota.id
+            mascotaId: String(bano.mascotaId)
           });
         },
         error: () => {
@@ -85,8 +85,7 @@ export class EditarBanoComponent implements OnInit {
 
     this.banoService.actualizar(this.banoId, {
       fecha: datos.fecha!,
-      notas: datos.notas || '',
-      mascotaId: Number(datos.mascotaId!)
+      notas: datos.notas || ''
     })
     .pipe(finalize(() => this.cargando = false))
     .subscribe({

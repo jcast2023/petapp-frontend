@@ -95,11 +95,13 @@ export class CrearBanoComponent implements OnInit {
 
     console.log('📤 Creando baño:', datos);
 
-    this.banoService.crear({
-      fecha: datos.fecha!,
-      notas: datos.notas || '',
-      mascotaId: Number(datos.mascotaId!)
-    })
+    this.banoService.crear(
+      {
+        fecha: datos.fecha!,
+        notas: datos.notas || ''
+      },
+      Number(datos.mascotaId!)
+    )
     .pipe(finalize(() => this.cargando.set(false)))
     .subscribe({
       next: (response) => {
