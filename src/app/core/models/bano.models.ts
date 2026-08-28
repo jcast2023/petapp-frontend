@@ -1,18 +1,8 @@
-export interface MascotaEnBano {
-  id: number;
-  nombre: string;
-  especie: string;
-  raza?: string;
-  fechaNacimiento?: string;
-  sexo?: string;
-  fotoUrl?: string | null;
-}
-
 export interface Bano {
   id: number;
   fecha: string;
   notas: string;
-  mascota: MascotaEnBano;
+  mascotaId: number; // Cambiar de "mascota" a "mascotaId"
 }
 
 export interface CrearBanoRequest {

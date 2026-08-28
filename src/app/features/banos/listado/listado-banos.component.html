@@ -33,7 +33,7 @@
             @for (bano of banos(); track bano.id) {
               <tr>
                 <td>{{ bano.fecha | date:'dd/MM/yyyy' }}</td>
-                <td>{{ bano.mascota.nombre || 'Mascota ID: ' + bano.mascota.id }}</td>
+                <td>{{ obtenerNombreMascota(bano.mascotaId) }}</td>
                 <td>{{ bano.notas || 'Sin notas' }}</td>
                 <td class="acciones">
                   <a [routerLink]="['/banos/editar', bano.id]" class="btn btn-sm btn-secondary">Editar</a>

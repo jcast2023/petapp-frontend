@@ -1,18 +1,11 @@
-export interface MascotaEnDesparasitacion {
-  id: number;
-  nombre: string;
-  especie: string;
-  raza?: string;
-}
-
 export interface Desparasitacion {
   id: number;
-  tipo: string; // "Interna" o "Externa"
+  tipo: string;
   producto: string;
   fechaAplicacion: string;
   fechaProximaDosis: string;
   notas: string;
-  mascota: MascotaEnDesparasitacion;
+  mascotaId: number; // Cambiar de "mascota" a "mascotaId"
 }
 
 export interface CrearDesparasitacionRequest {

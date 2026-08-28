@@ -5,7 +5,9 @@ import { finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { BanoService } from '../../../core/services/bano.service';
+import { MascotaService } from '../../../core/services/mascota.service';
 import { Bano } from '../../../core/models/bano.models';
+import { Mascota } from '../../../core/models/mascota.models';
 
 @Component({
   selector: 'app-listado-banos',
@@ -16,44 +18,50 @@ import { Bano } from '../../../core/models/bano.models';
 })
 export class ListadoBanosComponent implements OnInit {
   private readonly banoService = inject(BanoService);
+  private readonly mascotaService = inject(MascotaService);
 
   readonly banos = signal<Bano[]>([]);
+  readonly mascotas = signal<Mascota[]>([]);
   readonly cargando = signal(false);
   readonly error = signal('');
 
   ngOnInit(): void {
-    console.log('🔄 Inicializando ListadoBanosComponent');
+    this.cargarMascotas();
     this.cargarBanos();
+  }
+
+  cargarMascotas(): void {
+    this.mascotaService.listar().subscribe({
+      next: (mascotas) => {
+        this.mascotas.set(mascotas);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('❌ Error cargando mascotas:', error);
+      }
+    });
   }
 
   cargarBanos(): void {
     this.cargando.set(true);
     this.error.set('');
-    console.log('📤 Cargando baños...');
 
     this.banoService.listar()
       .pipe(finalize(() => {
         this.cargando.set(false);
-        console.log('✅ Finalizada carga de baños');
       }))
       .subscribe({
         next: (banos) => {
-          console.log('📋 Baños recibidos del backend:', banos);
-          console.log('📊 Cantidad de baños:', banos.length);
-          if (banos.length > 0) {
-            console.log('🔍 Primer baño:', banos[0]);
-            console.log('🔍 Mascota del primer baño:', banos[0].mascota);
-            console.log('🔍 Nombre de la mascota:', banos[0].mascota?.nombre);
-          }
           this.banos.set(banos);
         },
         error: (error: HttpErrorResponse) => {
-          console.error('❌ Error cargando baños:', error);
-          console.error('❌ Status:', error.status);
-          console.error('❌ Body:', error.error);
           this.error.set('Error al cargar los baños: ' + (error.error?.mensaje || error.message));
         }
       });
+  }
+
+  obtenerNombreMascota(mascotaId: number): string {
+    const mascota = this.mascotas().find(m => m.id === mascotaId);
+    return mascota ? mascota.nombre : 'Mascota ID: ' + mascotaId;
   }
 
   eliminarBano(id: number): void {
@@ -61,15 +69,12 @@ export class ListadoBanosComponent implements OnInit {
       return;
     }
 
-    console.log('🗑️ Eliminando baño ID:', id);
     this.banoService.eliminar(id)
       .subscribe({
         next: () => {
-          console.log('✅ Baño eliminado exitosamente');
           this.banos.update(lista => lista.filter(b => b.id !== id));
         },
         error: (error: HttpErrorResponse) => {
-          console.error('❌ Error eliminando baño:', error);
           this.error.set('Error al eliminar el registro');
         }
       });

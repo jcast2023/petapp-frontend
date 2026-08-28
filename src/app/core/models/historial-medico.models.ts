@@ -1,10 +1,3 @@
-export interface MascotaEnHistorial {
-  id: number;
-  nombre: string;
-  especie: string;
-  raza?: string;
-}
-
 export interface HistorialMedico {
   id: number;
   fecha: string;
@@ -13,7 +6,7 @@ export interface HistorialMedico {
   tratamiento: string;
   veterinario: string;
   clinica: string;
-  mascota: MascotaEnHistorial;
+  mascotaId: number; // Cambiar de "mascota" a "mascotaId"
 }
 
 export interface CrearHistorialMedicoRequest {

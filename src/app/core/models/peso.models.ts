@@ -1,15 +1,8 @@
-export interface MascotaEnPeso {
-  id: number;
-  nombre: string;
-  especie: string;
-  raza?: string;
-}
-
 export interface Peso {
   id: number;
   fecha: string;
   pesoKg: number;
-  mascota: MascotaEnPeso;
+  mascotaId: number; // Cambiar de "mascota" a "mascotaId"
 }
 
 export interface CrearPesoRequest {
