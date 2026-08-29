@@ -5,7 +5,9 @@ import { finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { HistorialMedicoService } from '../../../core/services/historial-medico.service';
+import { MascotaService } from '../../../core/services/mascota.service';
 import { HistorialMedico } from '../../../core/models/historial-medico.models';
+import { Mascota } from '../../../core/models/mascota.models';
 
 @Component({
   selector: 'app-listado-historial',
@@ -16,30 +18,39 @@ import { HistorialMedico } from '../../../core/models/historial-medico.models';
 })
 export class ListadoHistorialComponent implements OnInit {
   private readonly historialService = inject(HistorialMedicoService);
+  private readonly mascotaService = inject(MascotaService);
 
   readonly historiales = signal<HistorialMedico[]>([]);
+  readonly mascotas = signal<Mascota[]>([]);
   readonly cargando = signal(false);
   readonly error = signal('');
 
   ngOnInit(): void {
-    console.log('🔄 Inicializando ListadoHistorialComponent');
+    this.cargarMascotas();
     this.cargarHistorial();
+  }
+
+  cargarMascotas(): void {
+    this.mascotaService.listar().subscribe({
+      next: (mascotas) => {
+        this.mascotas.set(mascotas);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('❌ Error cargando mascotas:', error);
+      }
+    });
   }
 
   cargarHistorial(): void {
     this.cargando.set(true);
     this.error.set('');
-    console.log('📤 Cargando historial médico...');
 
     this.historialService.listar()
       .pipe(finalize(() => {
         this.cargando.set(false);
-        console.log('✅ Finalizada carga de historial médico');
       }))
       .subscribe({
         next: (historiales) => {
-          console.log('📋 Historiales recibidos:', historiales.length);
-          // Ordenar por fecha descendente (más reciente primero)
           const ordenados = [...historiales].sort((a, b) =>
             new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
           );
@@ -52,16 +63,19 @@ export class ListadoHistorialComponent implements OnInit {
       });
   }
 
+  obtenerNombreMascota(mascotaId: number): string {
+    const mascota = this.mascotas().find(m => m.id === mascotaId);
+    return mascota ? mascota.nombre : 'Sin mascota';
+  }
+
   eliminarHistorial(id: number): void {
     if (!confirm('¿Estás seguro de eliminar este registro del historial médico?')) {
       return;
     }
 
-    console.log('🗑️ Eliminando historial ID:', id);
     this.historialService.eliminar(id)
       .subscribe({
         next: () => {
-          console.log('✅ Historial eliminado exitosamente');
           this.historiales.update(lista => lista.filter(h => h.id !== id));
         },
         error: (error: HttpErrorResponse) => {
@@ -71,7 +85,6 @@ export class ListadoHistorialComponent implements OnInit {
       });
   }
 
-  // Función para truncar texto largo
   truncarTexto(texto: string, maxLength: number = 50): string {
     if (!texto) return '-';
     return texto.length > maxLength ? texto.substring(0, maxLength) + '...' : texto;

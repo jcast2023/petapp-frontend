@@ -66,7 +66,7 @@ export class EditarPesoComponent implements OnInit {
       });
   }
 
-  cargarPeso(): void {
+    cargarPeso(): void {
     this.cargando.set(true);
     this.pesoService.obtenerPorId(this.pesoId)
       .pipe(finalize(() => this.cargando.set(false)))
@@ -75,7 +75,7 @@ export class EditarPesoComponent implements OnInit {
           this.formulario.patchValue({
             fecha: peso.fecha,
             pesoKg: String(peso.pesoKg),
-            mascotaId: String(peso.mascota.id)
+            mascotaId: String(peso.mascotaId)
           });
         },
         error: () => {

@@ -32,7 +32,7 @@
           <tbody>
             @for (peso of pesos(); track peso.id) {
               <tr>
-                <td><strong>{{ peso.mascota.nombre }}</strong></td>
+                <td><strong>{{ obtenerNombreMascota(peso.mascotaId) }}</strong></td>
                 <td>{{ peso.fecha | date:'dd/MM/yyyy' }}</td>
                 <td>
                   <span class="peso-valor">{{ peso.pesoKg | number:'1.1-1' }} kg</span>

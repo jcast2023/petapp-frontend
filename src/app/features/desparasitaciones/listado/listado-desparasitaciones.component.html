@@ -36,7 +36,7 @@
             @for (desparasitacion of desparasitaciones(); track desparasitacion.id) {
               <tr>
                 <td><strong>{{ desparasitacion.producto }}</strong></td>
-                <td>{{ desparasitacion.mascota.nombre }}</td>
+                <td>{{ obtenerNombreMascota(desparasitacion.mascotaId) }}</td>
                 <td>
                   <span class="tipo-badge" [class]="getTipoClass(desparasitacion.tipo)">
                     {{ desparasitacion.tipo }}

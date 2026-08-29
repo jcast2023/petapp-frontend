@@ -71,7 +71,7 @@ export class EditarDesparasitacionComponent implements OnInit {
       });
   }
 
-  cargarDesparasitacion(): void {
+    cargarDesparasitacion(): void {
     this.cargando.set(true);
     this.desparasitacionService.obtenerPorId(this.desparasitacionId)
       .pipe(finalize(() => this.cargando.set(false)))
@@ -83,7 +83,7 @@ export class EditarDesparasitacionComponent implements OnInit {
             fechaAplicacion: desparasitacion.fechaAplicacion,
             fechaProximaDosis: desparasitacion.fechaProximaDosis,
             notas: desparasitacion.notas,
-            mascotaId: String(desparasitacion.mascota.id)
+            mascotaId: String(desparasitacion.mascotaId)
           });
         },
         error: () => {

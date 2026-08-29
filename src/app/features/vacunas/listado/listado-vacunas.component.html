@@ -36,7 +36,7 @@
             @for (vacuna of vacunas(); track vacuna.id) {
               <tr>
                 <td><strong>{{ vacuna.nombreVacuna }}</strong></td>
-                <td>{{ vacuna.mascota?.nombre || 'Sin mascota' }}</td>
+                <td>{{ obtenerNombreMascota(vacuna.mascotaId) }}</td>
                 <td>{{ vacuna.fechaAplicacion | date:'dd/MM/yyyy' }}</td>
                 <td>{{ vacuna.fechaProximaDosis | date:'dd/MM/yyyy' }}</td>
                 <td>{{ vacuna.veterinario || '-' }}</td>

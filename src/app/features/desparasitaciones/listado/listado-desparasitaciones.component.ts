@@ -5,7 +5,9 @@ import { finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { DesparasitacionService } from '../../../core/services/desparasitacion.service';
+import { MascotaService } from '../../../core/services/mascota.service';
 import { Desparasitacion } from '../../../core/models/desparasitacion.models';
+import { Mascota } from '../../../core/models/mascota.models';
 
 @Component({
   selector: 'app-listado-desparasitaciones',
@@ -16,29 +18,39 @@ import { Desparasitacion } from '../../../core/models/desparasitacion.models';
 })
 export class ListadoDesparasitacionesComponent implements OnInit {
   private readonly desparasitacionService = inject(DesparasitacionService);
+  private readonly mascotaService = inject(MascotaService);
 
   readonly desparasitaciones = signal<Desparasitacion[]>([]);
+  readonly mascotas = signal<Mascota[]>([]);
   readonly cargando = signal(false);
   readonly error = signal('');
 
   ngOnInit(): void {
-    console.log('🔄 Inicializando ListadoDesparasitacionesComponent');
+    this.cargarMascotas();
     this.cargarDesparasitaciones();
+  }
+
+  cargarMascotas(): void {
+    this.mascotaService.listar().subscribe({
+      next: (mascotas) => {
+        this.mascotas.set(mascotas);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('❌ Error cargando mascotas:', error);
+      }
+    });
   }
 
   cargarDesparasitaciones(): void {
     this.cargando.set(true);
     this.error.set('');
-    console.log('📤 Cargando desparasitaciones...');
 
     this.desparasitacionService.listar()
       .pipe(finalize(() => {
         this.cargando.set(false);
-        console.log('✅ Finalizada carga de desparasitaciones');
       }))
       .subscribe({
         next: (desparasitaciones) => {
-          console.log('📋 Desparasitaciones recibidas:', desparasitaciones.length);
           this.desparasitaciones.set(desparasitaciones);
         },
         error: (error: HttpErrorResponse) => {
@@ -48,16 +60,19 @@ export class ListadoDesparasitacionesComponent implements OnInit {
       });
   }
 
+  obtenerNombreMascota(mascotaId: number): string {
+    const mascota = this.mascotas().find(m => m.id === mascotaId);
+    return mascota ? mascota.nombre : 'Sin mascota';
+  }
+
   eliminarDesparasitacion(id: number): void {
     if (!confirm('¿Estás seguro de eliminar este registro de desparasitación?')) {
       return;
     }
 
-    console.log('🗑️ Eliminando desparasitación ID:', id);
     this.desparasitacionService.eliminar(id)
       .subscribe({
         next: () => {
-          console.log('✅ Desparasitación eliminada exitosamente');
           this.desparasitaciones.update(lista => lista.filter(d => d.id !== id));
         },
         error: (error: HttpErrorResponse) => {

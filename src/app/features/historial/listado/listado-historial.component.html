@@ -36,7 +36,7 @@
             @for (historial of historiales(); track historial.id) {
               <tr>
                 <td>{{ historial.fecha | date:'dd/MM/yyyy' }}</td>
-                <td><strong>{{ historial.mascota.nombre }}</strong></td>
+                <td><strong>{{ obtenerNombreMascota(historial.mascotaId) }}</strong></td>
                 <td>{{ truncarTexto(historial.motivoConsulta, 30) }}</td>
                 <td>{{ truncarTexto(historial.diagnostico, 30) }}</td>
                 <td>{{ historial.veterinario || '-' }}</td>

@@ -70,7 +70,7 @@ export class EditarHistorialComponent implements OnInit {
       });
   }
 
-  cargarHistorial(): void {
+    cargarHistorial(): void {
     this.cargando.set(true);
     this.historialService.obtenerPorId(this.historialId)
       .pipe(finalize(() => this.cargando.set(false)))
@@ -83,7 +83,7 @@ export class EditarHistorialComponent implements OnInit {
             tratamiento: historial.tratamiento,
             veterinario: historial.veterinario,
             clinica: historial.clinica,
-            mascotaId: String(historial.mascota.id)
+            mascotaId: String(historial.mascotaId)
           });
         },
         error: () => {
