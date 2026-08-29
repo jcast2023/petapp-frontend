@@ -1,45 +1,158 @@
 .crear-historial {
-  // Asegurar modelo de caja global en el formulario
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
   *, *::before, *::after {
     box-sizing: border-box;
   }
 
+  h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-size: 22px;
+    color: #1e293b;
+  }
+
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+  }
+
   .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 
     label {
       display: block;
       margin-bottom: 6px;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 14px;
+      color: #334155;
     }
 
     input, select, textarea {
-      width: 100%; // Forzar a respetar el contenedor
-      padding: 10px;
-      border: 1px solid #ccc;
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
       border-radius: 6px;
       font-size: 14px;
       font-family: inherit;
-      box-sizing: border-box; // Evita que el padding aumente el ancho real
+      box-sizing: border-box;
 
       &:focus {
         outline: none;
         border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+      }
+
+      &:disabled {
+        background-color: #f1f5f9;
+        cursor: not-allowed;
+      }
+    }
+
+    .error-text {
+      color: #dc3545;
+      font-size: 12px;
+      margin-top: 4px;
+      display: block;
+    }
+  }
+
+  /* Buscador de Mascotas */
+  .search-container {
+    position: relative;
+
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+      .search-item {
+        padding: 10px 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        &:hover {
+          background-color: #f1f5f9;
+        }
+
+        .search-item-nombre {
+          font-weight: 600;
+        }
+
+        .search-item-detalle {
+          color: #64748b;
+          font-size: 13px;
+        }
+      }
+    }
+
+    .search-empty, .search-loading {
+      padding: 10px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+  }
+
+  /* Alerta Mascota Seleccionada */
+  .mascota-seleccionada {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #e8f5e9;
+    color: #1b5e20;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-top: 8px;
+    font-size: 14px;
+
+    .btn-clear {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 16px;
+      color: #666;
+      cursor: pointer;
+
+      &:hover {
+        color: #d32f2f;
       }
     }
   }
 
-  /* REGLA CORREGIDA PARA VETERINARIO Y CLÍNICA */
+  /* Distribución Veterinario y Clínica */
   .form-row {
     display: flex;
-    gap: 20px; // Separa físicamente las columnas por 20px
+    gap: 20px;
     width: 100%;
     box-sizing: border-box;
 
     .form-group.half {
-      flex: 1; // Ambas columnas toman el 50% exacto del espacio disponible menos el gap
-      min-width: 0; // Previene desbordamientos de flexbox
-      margin-bottom: 16px;
+      flex: 1;
+      min-width: 0;
+      margin-bottom: 18px;
 
       input {
         width: 100%;
@@ -49,6 +162,50 @@
     @media (max-width: 576px) {
       flex-direction: column;
       gap: 0;
+    }
+  }
+
+  /* Estilos de Botones de Acción */
+  .form-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-top: 24px;
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: #ffffff;
+
+      &:hover {
+        background-color: #5a6268;
+      }
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: #ffffff;
+
+      &:hover:not(:disabled) {
+        background-color: #0069d9;
+      }
+
+      &:disabled {
+        background-color: #93c5fd;
+        cursor: not-allowed;
+      }
     }
   }
 }

@@ -71,22 +71,35 @@
             white-space: normal;
             word-break: break-word;
           }
+
+          /* Asegurar que la primera columna (Fecha) se mantenga en una sola línea */
+          td:first-child {
+            white-space: nowrap;
+          }
         }
       }
     }
   }
 
+  /* Estilos específicos para los botones de la tabla */
   .acciones {
     display: flex;
+    align-items: center;
     gap: 8px;
+    white-space: nowrap;
 
     .btn {
-      padding: 4px 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       text-decoration: none;
-      font-size: 12px;
+      font-size: 13px;
+      white-space: nowrap;
+      line-height: 1;
     }
 
     .btn-secondary {

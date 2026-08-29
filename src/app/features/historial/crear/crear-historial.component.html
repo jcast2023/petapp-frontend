@@ -100,7 +100,7 @@
       <textarea id="tratamiento" formControlName="tratamiento" rows="3" placeholder="Descripción del tratamiento recetado..."></textarea>
     </div>
 
-    <!-- Filas agrupadas: Veterinario y Clínica corregidos -->
+    <!-- Filas agrupadas: Veterinario y Clínica -->
     <div class="form-row">
       <div class="form-group half">
         <label for="veterinario">Veterinario</label>
@@ -114,7 +114,7 @@
     </div>
 
     <!-- Botones de Acción -->
-    <div class="acciones">
+    <div class="form-actions acciones">
       <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
       <button type="submit" class="btn btn-primary" [disabled]="formulario.invalid || cargando() || cargandoMascotas()">
         {{ cargando() ? 'Guardando...' : 'Registrar Consulta' }}
