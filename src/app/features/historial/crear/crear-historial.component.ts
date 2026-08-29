@@ -50,7 +50,6 @@ export class CrearHistorialComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarMascotas();
-    // Fecha actual por defecto
     this.formulario.patchValue({
       fecha: new Date().toISOString().split('T')[0]
     });
@@ -64,7 +63,6 @@ export class CrearHistorialComponent implements OnInit {
       .pipe(finalize(() => this.cargandoMascotas.set(false)))
       .subscribe({
         next: (mascotas) => {
-          console.log('✅ Mascotas cargadas:', mascotas.length);
           this.mascotas.set(mascotas);
         },
         error: () => {
@@ -88,6 +86,10 @@ export class CrearHistorialComponent implements OnInit {
     this.filtroBusqueda.set('');
   }
 
+  cancelar(): void {
+    this.router.navigate(['/historial'], { replaceUrl: true });
+  }
+
   onSubmit(): void {
     if (this.formulario.invalid) {
       this.formulario.markAllAsTouched();
@@ -97,8 +99,6 @@ export class CrearHistorialComponent implements OnInit {
     this.cargando.set(true);
     this.error.set('');
     const datos = this.formulario.value;
-
-    console.log('📤 Creando historial médico:', datos);
 
     this.historialService.crear({
       fecha: datos.fecha!,
@@ -112,7 +112,8 @@ export class CrearHistorialComponent implements OnInit {
     .pipe(finalize(() => this.cargando.set(false)))
     .subscribe({
       next: () => {
-        this.router.navigate(['/historial']);
+        // Navegación limpia al historial eliminando la ruta de creación de la pila
+        this.router.navigate(['/historial'], { replaceUrl: true });
       },
       error: (error: HttpErrorResponse) => {
         console.error('❌ Error creando historial:', error);

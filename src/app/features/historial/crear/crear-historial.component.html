@@ -6,6 +6,7 @@
   }
 
   <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+    <!-- Buscador de Mascota -->
     <div class="form-group">
       <label for="mascotaBusqueda">Mascota *</label>
 
@@ -66,6 +67,7 @@
       }
     </div>
 
+    <!-- Fecha -->
     <div class="form-group">
       <label for="fecha">Fecha de la Consulta *</label>
       <input id="fecha" type="date" formControlName="fecha">
@@ -74,6 +76,7 @@
       }
     </div>
 
+    <!-- Motivo -->
     <div class="form-group">
       <label for="motivoConsulta">Motivo de la Consulta *</label>
       <input id="motivoConsulta" type="text" formControlName="motivoConsulta" placeholder="Ej: Vómitos, diarrea, tos, etc.">
@@ -82,6 +85,7 @@
       }
     </div>
 
+    <!-- Diagnóstico -->
     <div class="form-group">
       <label for="diagnostico">Diagnóstico *</label>
       <textarea id="diagnostico" formControlName="diagnostico" rows="3" placeholder="Descripción del diagnóstico..."></textarea>
@@ -90,11 +94,13 @@
       }
     </div>
 
+    <!-- Tratamiento -->
     <div class="form-group">
       <label for="tratamiento">Tratamiento</label>
       <textarea id="tratamiento" formControlName="tratamiento" rows="3" placeholder="Descripción del tratamiento recetado..."></textarea>
     </div>
 
+    <!-- Filas agrupadas: Veterinario y Clínica corregidos -->
     <div class="form-row">
       <div class="form-group half">
         <label for="veterinario">Veterinario</label>
@@ -107,9 +113,10 @@
       </div>
     </div>
 
+    <!-- Botones de Acción -->
     <div class="acciones">
-      <a routerLink="/historial" class="btn btn-secondary">Cancelar</a>
-      <button type="submit" class="btn btn-primary" [disabled]="cargando() || cargandoMascotas()">
+      <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="formulario.invalid || cargando() || cargandoMascotas()">
         {{ cargando() ? 'Guardando...' : 'Registrar Consulta' }}
       </button>
     </div>
