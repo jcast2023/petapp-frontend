@@ -1,19 +1,7 @@
 .crear-historial {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 20px;
-  box-sizing: border-box;
-
-  h2 {
-    margin-bottom: 24px;
-  }
-
-  .error-message {
-    color: #dc3545;
-    padding: 10px;
-    background: #f8d7da;
-    border-radius: 6px;
-    margin-bottom: 16px;
+  // Asegurar modelo de caja global en el formulario
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
 
   .form-group {
@@ -26,198 +14,41 @@
     }
 
     input, select, textarea {
-      width: 100%;
+      width: 100%; // Forzar a respetar el contenedor
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 14px;
       font-family: inherit;
-      box-sizing: border-box;
+      box-sizing: border-box; // Evita que el padding aumente el ancho real
 
       &:focus {
         outline: none;
         border-color: #007bff;
       }
     }
-
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .error-text {
-      color: #dc3545;
-      font-size: 12px;
-      margin-top: 4px;
-      display: block;
-    }
-
-    .search-container {
-      position: relative;
-
-      .search-input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 14px;
-        box-sizing: border-box;
-
-        &:focus {
-          outline: none;
-          border-color: #007bff;
-        }
-      }
-
-      .search-results {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border: 1px solid #ccc;
-        border-top: none;
-        border-radius: 0 0 6px 6px;
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-
-        .search-item {
-          padding: 10px 12px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          border-bottom: 1px solid #f0f0f0;
-
-          &:hover {
-            background: #f0f7ff;
-          }
-
-          .search-item-icon {
-            font-size: 20px;
-          }
-
-          .search-item-nombre {
-            font-weight: 500;
-          }
-
-          .search-item-detalle {
-            font-size: 13px;
-            color: #6c757d;
-          }
-        }
-      }
-
-      .search-empty {
-        padding: 12px;
-        text-align: center;
-        color: #6c757d;
-
-        a {
-          color: #007bff;
-          text-decoration: none;
-
-          &:hover {
-            text-decoration: underline;
-          }
-        }
-      }
-
-      .search-loading {
-        padding: 12px;
-        text-align: center;
-        color: #6c757d;
-      }
-    }
-
-    .mascota-seleccionada {
-      margin-top: 8px;
-      padding: 8px 12px;
-      background: #e8f5e9;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .btn-clear {
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        color: #666;
-        padding: 0 4px;
-
-        &:hover {
-          color: #dc3545;
-        }
-      }
-    }
   }
 
-  /* Corrección del grid/flex para Veterinario y Clínica */
+  /* REGLA CORREGIDA PARA VETERINARIO Y CLÍNICA */
   .form-row {
     display: flex;
-    gap: 16px;
+    gap: 20px; // Separa físicamente las columnas por 20px
     width: 100%;
     box-sizing: border-box;
 
-    .half {
-      flex: 1 1 50%;
-      min-width: 0; // Evita que los inputs colapsen o desborden dentro del flex container
+    .form-group.half {
+      flex: 1; // Ambas columnas toman el 50% exacto del espacio disponible menos el gap
+      min-width: 0; // Previene desbordamientos de flexbox
       margin-bottom: 16px;
+
+      input {
+        width: 100%;
+      }
     }
 
     @media (max-width: 576px) {
       flex-direction: column;
       gap: 0;
-
-      .half {
-        flex: 1 1 100%;
-      }
-    }
-  }
-
-  .acciones {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 24px;
-
-    .btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      text-decoration: none;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .btn-primary {
-      background: #007bff;
-      color: white;
-
-      &:hover:not(:disabled) {
-        background: #0069d9;
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-    }
-
-    .btn-secondary {
-      background: #6c757d;
-      color: white;
-
-      &:hover {
-        background: #5a6268;
-      }
     }
   }
 }
