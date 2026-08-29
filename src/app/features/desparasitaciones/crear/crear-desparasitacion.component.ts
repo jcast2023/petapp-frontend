@@ -3,7 +3,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 
 import { DesparasitacionService } from '../../../core/services/desparasitacion.service';
 import { MascotaService } from '../../../core/services/mascota.service';
@@ -110,9 +109,9 @@ export class CrearDesparasitacionComponent implements OnInit {
       next: () => {
         this.router.navigate(['/desparasitaciones']);
       },
-      error: (error: HttpErrorResponse) => {
-        console.error('❌ Error creando desparasitación:', error);
-        this.error.set(error.error?.mensaje || 'Error al crear el registro de desparasitación');
+      error: (err: { mensaje: string; status: number }) => {
+        console.error('❌ Error creando desparasitación:', err);
+        this.error.set(err.mensaje || 'Error al crear el registro de desparasitación');
       }
     });
   }

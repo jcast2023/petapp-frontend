@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -59,13 +59,13 @@ export class HistorialMedicoService {
       diagnostico: historial.diagnostico,
       tratamiento: historial.tratamiento,
       veterinario: historial.veterinario,
-      clinica: historial.clinica,
-      mascota: { id: historial.mascotaId }
+      clinica: historial.clinica
     };
 
-    console.log('📤 Body enviado:', JSON.stringify(body, null, 2));
+    const params = new HttpParams().set('mascotaId', historial.mascotaId.toString());
 
     return this.http.post<HistorialMedico>(this.apiUrl, body, {
+      params,
       withCredentials: true
     }).pipe(
       catchError(this.manejarError)
@@ -81,8 +81,7 @@ export class HistorialMedicoService {
       diagnostico: historial.diagnostico,
       tratamiento: historial.tratamiento,
       veterinario: historial.veterinario,
-      clinica: historial.clinica,
-      mascota: { id: historial.mascotaId }
+      clinica: historial.clinica
     };
 
     return this.http.put<HistorialMedico>(`${this.apiUrl}/${id}`, body, {

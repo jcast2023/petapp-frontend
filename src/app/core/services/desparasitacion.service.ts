@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -58,13 +58,16 @@ export class DesparasitacionService {
       producto: desparasitacion.producto,
       fechaAplicacion: desparasitacion.fechaAplicacion,
       fechaProximaDosis: desparasitacion.fechaProximaDosis,
-      notas: desparasitacion.notas,
-      mascota: { id: desparasitacion.mascotaId }
+      notas: desparasitacion.notas
     };
 
+    const params = new HttpParams().set('mascotaId', desparasitacion.mascotaId.toString());
+
     console.log('📤 Body enviado:', JSON.stringify(body, null, 2));
+    console.log('📤 Param enviado: mascotaId =', desparasitacion.mascotaId);
 
     return this.http.post<Desparasitacion>(this.apiUrl, body, {
+      params,
       withCredentials: true
     }).pipe(
       catchError(this.manejarError)
@@ -79,8 +82,7 @@ export class DesparasitacionService {
       producto: desparasitacion.producto,
       fechaAplicacion: desparasitacion.fechaAplicacion,
       fechaProximaDosis: desparasitacion.fechaProximaDosis,
-      notas: desparasitacion.notas,
-      mascota: { id: desparasitacion.mascotaId }
+      notas: desparasitacion.notas
     };
 
     return this.http.put<Desparasitacion>(`${this.apiUrl}/${id}`, body, {

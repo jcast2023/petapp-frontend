@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -53,19 +53,18 @@ export class VacunaService {
   crear(vacuna: CrearVacunaRequest): Observable<Vacuna> {
     console.log('📤 Creando vacuna:', vacuna);
 
-    // Enviar mascotaId como campo separado, no como objeto anidado
     const body = {
       nombreVacuna: vacuna.nombreVacuna,
       fechaAplicacion: vacuna.fechaAplicacion,
       fechaProximaDosis: vacuna.fechaProximaDosis,
       veterinario: vacuna.veterinario,
-      notas: vacuna.notas,
-      mascotaId: vacuna.mascotaId
+      notas: vacuna.notas
     };
 
-    console.log('📤 Body enviado:', JSON.stringify(body, null, 2));
+    const params = new HttpParams().set('mascotaId', vacuna.mascotaId.toString());
 
     return this.http.post<Vacuna>(this.apiUrl, body, {
+      params,
       withCredentials: true
     }).pipe(
       catchError(this.manejarError)
@@ -74,13 +73,13 @@ export class VacunaService {
 
   actualizar(id: number, vacuna: ActualizarVacunaRequest): Observable<Vacuna> {
     console.log('📤 Actualizando vacuna ID:', id);
+
     const body = {
       nombreVacuna: vacuna.nombreVacuna,
       fechaAplicacion: vacuna.fechaAplicacion,
       fechaProximaDosis: vacuna.fechaProximaDosis,
       veterinario: vacuna.veterinario,
-      notas: vacuna.notas,
-      mascotaId: vacuna.mascotaId
+      notas: vacuna.notas
     };
 
     return this.http.put<Vacuna>(`${this.apiUrl}/${id}`, body, {

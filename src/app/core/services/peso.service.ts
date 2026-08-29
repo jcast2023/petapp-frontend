@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -55,13 +55,13 @@ export class PesoService {
 
     const body = {
       fecha: peso.fecha,
-      pesoKg: peso.pesoKg,
-      mascota: { id: peso.mascotaId }
+      pesoKg: peso.pesoKg
     };
 
-    console.log('📤 Body enviado:', JSON.stringify(body, null, 2));
+    const params = new HttpParams().set('mascotaId', peso.mascotaId.toString());
 
     return this.http.post<Peso>(this.apiUrl, body, {
+      params,
       withCredentials: true
     }).pipe(
       catchError(this.manejarError)
@@ -69,12 +69,11 @@ export class PesoService {
   }
 
   actualizar(id: number, peso: ActualizarPesoRequest): Observable<Peso> {
-    console.log('📤 Actualizando registro de peso ID:', id);
+    console.log('📤 Actualizando peso ID:', id);
 
     const body = {
       fecha: peso.fecha,
-      pesoKg: peso.pesoKg,
-      mascota: { id: peso.mascotaId }
+      pesoKg: peso.pesoKg
     };
 
     return this.http.put<Peso>(`${this.apiUrl}/${id}`, body, {
@@ -85,7 +84,7 @@ export class PesoService {
   }
 
   eliminar(id: number): Observable<void> {
-    console.log('📤 Eliminando registro de peso ID:', id);
+    console.log('📤 Eliminando peso ID:', id);
     return this.http.delete<void>(`${this.apiUrl}/${id}`, {
       withCredentials: true
     }).pipe(
