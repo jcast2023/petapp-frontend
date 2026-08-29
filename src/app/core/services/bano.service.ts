@@ -6,7 +6,7 @@ import { Bano, BanoRequest } from '../models/bano.models';
 
 @Injectable({ providedIn: 'root' })
 export class BanoService {
-  private baseUrl = `${environment.apiUrl}/api/banos`;
+  private baseUrl = `${environment.apiUrl}/banos`;
 
   constructor(private http: HttpClient) {}
 
