@@ -1,4 +1,6 @@
-/* You can ad* {
+/* Global Styles */
+
+* {
   box-sizing: border-box;
 }
 
@@ -9,16 +11,71 @@ body {
 }
 
 body {
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: #1e293b;
 }
 
 button,
 input {
   font: inherit;
-}d global styles to this file, and also import other style files */
+}
+
+/* ==========================================================================
+   CORRECCIONES GLOBALES PARA PETAPP
+   ========================================================================== */
+
+/* 1. Solución para "Veterinario" y "Clínica" pegados en el formulario */
+.form-row {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 20px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+
+  .form-group.half,
+  .half {
+    flex: 1 1 50% !important;
+    width: auto !important;
+    max-width: 50% !important;
+    margin-bottom: 16px !important;
+  }
+
+  input {
+    width: 100% !important;
+    border: 1px solid #ccc !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* Adaptación responsive para pantallas móviles */
+@media (max-width: 576px) {
+  .form-row {
+    flex-direction: column !important;
+    gap: 0 !important;
+
+    .form-group.half,
+    .half {
+      max-width: 100% !important;
+    }
+  }
+}
+
+/* 2. Solución para el texto truncado con "..." en la tabla de Historial */
+table {
+  width: 100% !important;
+  table-layout: auto !important;
+
+  th, td {
+    padding: 12px 10px !important;
+    vertical-align: top !important;
+  }
+
+  td {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: none !important;
+  }
+}
