@@ -1,7 +1,9 @@
 <div class="listado-videos">
   <div class="header">
     <h2>🎬 Videos de Obediencia</h2>
-    <a routerLink="/videos/crear" class="btn btn-primary">+ Agregar Video</a>
+    @if (esAdmin) {
+      <a routerLink="/videos/crear" class="btn btn-primary">+ Registrar Video</a>
+    }
   </div>
 
   @if (cargando()) {
@@ -16,7 +18,9 @@
     @if (videos().length === 0) {
       <div class="empty-state">
         <p>No hay videos en el catálogo.</p>
-        <a routerLink="/videos/crear" class="btn btn-primary">Agregar primer video</a>
+        @if (esAdmin) {
+          <a routerLink="/videos/crear" class="btn btn-primary">Agregar primer video</a>
+        }
       </div>
     } @else {
       <div class="grid-videos">
@@ -49,8 +53,11 @@
 
             <div class="video-acciones">
               <button (click)="verVideo(video.id)" class="btn btn-sm btn-primary">▶ Ver</button>
-              <a [routerLink]="['/videos/editar', video.id]" class="btn btn-sm btn-secondary">Editar</a>
-              <button (click)="eliminarVideo(video.id)" class="btn btn-sm btn-danger">Eliminar</button>
+
+              @if (esAdmin) {
+                <a [routerLink]="['/videos/editar', video.id]" class="btn btn-sm btn-secondary">Editar</a>
+                <button (click)="eliminarVideo(video.id)" class="btn btn-sm btn-danger">Eliminar</button>
+              }
             </div>
           </div>
         }

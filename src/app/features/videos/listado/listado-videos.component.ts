@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { VideoService } from '../../../core/services/video.service';
 import { Video } from '../../../core/models/video.models';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-listado-videos',
@@ -17,6 +18,7 @@ import { Video } from '../../../core/models/video.models';
 export class ListadoVideosComponent implements OnInit {
   private readonly videoService = inject(VideoService);
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
 
   readonly videos = signal<Video[]>([]);
   readonly cargando = signal(false);
@@ -27,6 +29,10 @@ export class ListadoVideosComponent implements OnInit {
     'Intermedio': 'badge-intermedio',
     'Avanzado': 'badge-avanzado'
   };
+
+  get esAdmin(): boolean {
+    return this.authService.getRole() === 'ROLE_ADMIN';
+  }
 
   ngOnInit(): void {
     console.log('🔄 Inicializando ListadoVideosComponent');

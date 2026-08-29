@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from '../../core/guards/auth.guard';
+import { adminGuard } from '../../core/guards/admin.guard';
 
 export const videosRoutes: Routes = [
   {
@@ -18,12 +19,12 @@ export const videosRoutes: Routes = [
     path: 'crear',
     loadComponent: () => import('./crear/crear-video.component')
       .then(m => m.CrearVideoComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, adminGuard]
   },
   {
     path: 'editar/:id',
     loadComponent: () => import('./editar/editar-video.component')
       .then(m => m.EditarVideoComponent),
-    canActivate: [authGuard]
+    canActivate: [authGuard, adminGuard]
   }
 ];

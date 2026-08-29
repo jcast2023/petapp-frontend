@@ -10,6 +10,13 @@ import {
   RegistroRequest
 } from '../models/auth.models';
 
+export interface UsuarioSesion {
+  id: number;
+  nombre: string;
+  correo: string;
+  rol: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +29,7 @@ export class AuthService {
 
   login(datos: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, datos, {
-      withCredentials: true // Envía y recibe cookies
+      withCredentials: true
     }).pipe(
       tap(response => this.guardarSesion(response))
     );
@@ -37,15 +44,16 @@ export class AuthService {
   }
 
   private guardarSesion(respuesta: AuthResponse): void {
-    // El token está en la cookie HTTP-only, solo guardamos datos del usuario
-    localStorage.setItem(this.usuarioKey, JSON.stringify({
+    const usuario: UsuarioSesion = {
       id: respuesta.usuarioId,
       nombre: respuesta.nombre,
-      correo: respuesta.correo
-    }));
+      correo: respuesta.correo,
+      rol: respuesta.rol || 'ROLE_USER' // Asegúrate de incluir el campo rol en AuthResponse del Backend
+    };
+    localStorage.setItem(this.usuarioKey, JSON.stringify(usuario));
   }
 
-  obtenerUsuario(): { id: number; nombre: string; correo: string } | null {
+  obtenerUsuario(): UsuarioSesion | null {
     const usuario = localStorage.getItem(this.usuarioKey);
     return usuario ? JSON.parse(usuario) : null;
   }
@@ -54,12 +62,15 @@ export class AuthService {
     return this.obtenerUsuario()?.id || null;
   }
 
+  getRole(): string {
+    return this.obtenerUsuario()?.rol || 'ROLE_USER';
+  }
+
   estaAutenticado(): boolean {
     return localStorage.getItem(this.usuarioKey) !== null;
   }
 
   cerrarSesion(): void {
-    // Llamar al endpoint de logout para eliminar la cookie
     this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true })
       .subscribe({
         next: () => {
@@ -67,7 +78,6 @@ export class AuthService {
           this.router.navigate(['/login']);
         },
         error: () => {
-          // Si falla, igual limpiamos localmente
           localStorage.removeItem(this.usuarioKey);
           this.router.navigate(['/login']);
         }
