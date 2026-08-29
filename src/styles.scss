@@ -61,14 +61,14 @@ input {
   }
 }
 
-/* 2. Solución para el texto truncado con "..." en la tabla de Historial */
+/* 2. Solución para el texto de la tabla (sin romper botones ni fechas) */
 table {
   width: 100% !important;
   table-layout: auto !important;
 
   th, td {
     padding: 12px 10px !important;
-    vertical-align: top !important;
+    vertical-align: middle !important;
   }
 
   td {
@@ -77,5 +77,13 @@ table {
     overflow: visible !important;
     text-overflow: clip !important;
     max-width: none !important;
+  }
+
+  /* Excepciones: Fecha y Columna de Acciones no se rompen */
+  td:first-child,
+  td.acciones,
+  td.acciones .btn {
+    white-space: nowrap !important;
+    word-break: normal !important;
   }
 }
