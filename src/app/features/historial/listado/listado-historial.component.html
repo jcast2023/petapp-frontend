@@ -37,8 +37,11 @@
               <tr>
                 <td>{{ historial.fecha | date:'dd/MM/yyyy' }}</td>
                 <td><strong>{{ obtenerNombreMascota(historial.mascotaId) }}</strong></td>
-                <td>{{ truncarTexto(historial.motivoConsulta, 30) }}</td>
-                <td>{{ truncarTexto(historial.diagnostico, 30) }}</td>
+
+                <!-- MOSTRAR TEXTO COMPLETO AQUÍ -->
+                <td>{{ historial.motivoConsulta }}</td>
+                <td>{{ historial.diagnostico }}</td>
+
                 <td>{{ historial.veterinario || '-' }}</td>
                 <td>{{ historial.clinica || '-' }}</td>
                 <td class="acciones">
