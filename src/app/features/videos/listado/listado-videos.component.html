@@ -26,19 +26,13 @@
       <div class="grid-videos">
         @for (video of videos(); track video.id) {
           <div class="card-video">
-            <div class="video-thumbnail" (click)="verVideo(video.id)">
-              @if (video.miniaturaUrl) {
-                <img [src]="video.miniaturaUrl" [alt]="video.titulo" loading="lazy">
-              } @else {
-                <div class="thumbnail-placeholder">
-                  <span>🎥</span>
-                </div>
-              }
-              <span class="duracion">{{ formatearDuracion(video.duracionSegundos) }}</span>
-              <div class="play-overlay">
-                <span>▶</span>
-              </div>
-            </div>
+           <div class="video-thumbnail" (click)="verVideo(video.id)">
+  <img [src]="obtenerMiniatura(video)" [alt]="video.titulo" loading="lazy">
+  <span class="duracion">{{ formatearDuracion(video.duracionSegundos) }}</span>
+  <div class="play-overlay">
+    <span>▶</span>
+  </div>
+</div>
 
             <div class="video-info">
               <h3 (click)="verVideo(video.id)">{{ video.titulo }}</h3>

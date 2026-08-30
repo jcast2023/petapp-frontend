@@ -94,4 +94,25 @@ export class ListadoVideosComponent implements OnInit {
     const segs = segundos % 60;
     return `${minutos}:${segs.toString().padStart(2, '0')}`;
   }
+
+  obtenerMiniatura(video: Video): string {
+  // 1. Si ya tiene miniatura explícita, la usa
+  if (video.miniaturaUrl) {
+    return video.miniaturaUrl;
+  }
+
+  // 2. Extraer miniatura desde urlVideo
+  if (video.urlVideo) {
+    const url = video.urlVideo;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+
+    if (match && match[2].length === 11) {
+      return `https://img.youtube.com/vi/${match[2]}/hqdefault.jpg`;
+    }
+  }
+
+  // 3. Fallback en caso no sea un enlace de YouTube
+  return 'https://via.placeholder.com/600x400?text=PetApp+Video';
+}
 }
