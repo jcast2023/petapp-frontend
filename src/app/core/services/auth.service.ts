@@ -73,14 +73,14 @@ export class AuthService {
   // Corregido: quita "/auth" de la URL
 solicitarRecuperacion(email: string): Observable<{ mensaje: string }> {
   return this.http.post<{ mensaje: string }>(
-    `${this.apiUrl}/recuperar-password`,
+    `${this.apiUrl}/solicitar-recuperacion`,
     { email }
   );
 }
 
 restablecerPassword(token: string, nuevaPassword: string): Observable<{ mensaje: string }> {
   return this.http.post<{ mensaje: string }>(
-    `${this.apiUrl}/reset-password`,
+    `${this.apiUrl}/restablecer-password`,
     { token, nuevaPassword }
   );
 }
