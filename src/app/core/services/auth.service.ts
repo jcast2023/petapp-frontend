@@ -48,7 +48,7 @@ export class AuthService {
       id: respuesta.usuarioId,
       nombre: respuesta.nombre,
       correo: respuesta.correo,
-      rol: respuesta.rol || 'ROLE_USER' // Asegúrate de incluir el campo rol en AuthResponse del Backend
+      rol: respuesta.rol || 'ROLE_USER'
     };
     localStorage.setItem(this.usuarioKey, JSON.stringify(usuario));
   }
@@ -70,20 +70,19 @@ export class AuthService {
     return localStorage.getItem(this.usuarioKey) !== null;
   }
 
-  // Corregido: quita "/auth" de la URL
-solicitarRecuperacion(email: string): Observable<{ mensaje: string }> {
-  return this.http.post<{ mensaje: string }>(
-    `${this.apiUrl}/recuperar-password`,
-    { email }
-  );
-}
+  solicitarRecuperacion(email: string): Observable<{ mensaje: string }> {
+    return this.http.post<{ mensaje: string }>(
+      `${this.apiUrl}/recuperar-password`,
+      { email }
+    );
+  }
 
-restablecerPassword(token: string, nuevaPassword: string): Observable<{ mensaje: string }> {
-  return this.http.post<{ mensaje: string }>(
-    `${this.apiUrl}/reset-password`,
-    { token, nuevaPassword }
-  );
-}
+  restablecerPassword(token: string, nuevaPassword: string): Observable<{ mensaje: string }> {
+    return this.http.post<{ mensaje: string }>(
+      `${this.apiUrl}/reset-password`,
+      { token, nuevaPassword }
+    );
+  }
 
   cerrarSesion(): void {
     this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true })
