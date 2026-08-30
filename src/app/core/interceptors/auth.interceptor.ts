@@ -1,8 +1,12 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  // Con cookies HTTP-only, solo necesitamos withCredentials: true
-  // El navegador envía automáticamente las cookies
+  // 1. Si la petición va a la autenticación pública, se envía normal
+  if (req.url.includes('/api/auth/')) {
+    return next(req);
+  }
+
+  // 2. Para todo lo demás (mascotas, vacunas, etc.), conserva las cookies HTTP-only
   const authReq = req.clone({
     withCredentials: true
   });
