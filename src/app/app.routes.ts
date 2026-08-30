@@ -13,6 +13,16 @@ export const routes: Routes = [
       .then(m => m.Registro)
   },
   {
+    path: 'recuperar-password',
+    loadComponent: () => import('./pages/solicitar-recuperacion/solicitar-recuperacion')
+      .then(m => m.SolicitarRecuperacion) // o m.SolicitarRecuperacionComponent según cómo nombraste la clase
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () => import('./pages/reset-password/reset-password')
+      .then(m => m.ResetPassword) // o m.ResetPasswordComponent según cómo nombraste la clase
+  },
+  {
     path: 'dashboard',
     loadComponent: () => import('./features/dashboard/dashboard')
       .then(m => m.Dashboard),
@@ -49,22 +59,22 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'historial',
+    loadChildren: () => import('./features/historial/historial.routes')
+      .then(m => m.historialRoutes),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'videos',
+    loadChildren: () => import('./features/videos/videos.routes')
+      .then(m => m.videosRoutes),
+    canActivate: [authGuard]
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
   },
-  {
-  path: 'historial',
-  loadChildren: () => import('./features/historial/historial.routes')
-    .then(m => m.historialRoutes),
-  canActivate: [authGuard]
-},
-{
-  path: 'videos',
-  loadChildren: () => import('./features/videos/videos.routes')
-    .then(m => m.videosRoutes),
-  canActivate: [authGuard]
-},
   {
     path: '**',
     redirectTo: 'dashboard'

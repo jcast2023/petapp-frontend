@@ -70,6 +70,20 @@ export class AuthService {
     return localStorage.getItem(this.usuarioKey) !== null;
   }
 
+  solicitarRecuperacion(email: string): Observable<{ mensaje: string }> {
+  return this.http.post<{ mensaje: string }>(
+    `${this.apiUrl}/auth/recuperar-password`,
+    { email }
+  );
+}
+
+restablecerPassword(token: string, nuevaPassword: string): Observable<{ mensaje: string }> {
+  return this.http.post<{ mensaje: string }>(
+    `${this.apiUrl}/auth/reset-password`,
+    { token, nuevaPassword }
+  );
+}
+
   cerrarSesion(): void {
     this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true })
       .subscribe({

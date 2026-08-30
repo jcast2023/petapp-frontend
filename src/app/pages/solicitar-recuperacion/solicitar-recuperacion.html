@@ -1,0 +1,47 @@
+<div class="recuperacion-container">
+  <div class="recuperacion-card">
+    <h2>Recuperar Contraseña</h2>
+    <p class="description">
+      Ingresa tu correo electrónico registrado y te enviaremos un enlace para restablecer tu contraseña.
+    </p>
+
+    @if (mensajeExito) {
+      <div class="alert alert-success">
+        {{ mensajeExito }}
+      </div>
+    }
+
+    @if (mensajeError) {
+      <div class="alert alert-danger">
+        {{ mensajeError }}
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Correo Electrónico</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="ejemplo@correo.com"
+          [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched"
+        />
+        @if (form.get('email')?.touched && form.get('email')?.hasError('required')) {
+          <small class="error-text">El correo es obligatorio.</small>
+        }
+        @if (form.get('email')?.touched && form.get('email')?.hasError('email')) {
+          <small class="error-text">Ingresa un correo electrónico válido.</small>
+        }
+      </div>
+
+      <button type="submit" [disabled]="loading || form.invalid" class="btn-primary">
+        {{ loading ? 'Enviando...' : 'Enviar enlace' }}
+      </button>
+    </form>
+
+    <div class="card-footer">
+      <a routerLink="/login">Volver al inicio de sesión</a>
+    </div>
+  </div>
+</div>
