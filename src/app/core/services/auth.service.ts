@@ -70,16 +70,17 @@ export class AuthService {
     return localStorage.getItem(this.usuarioKey) !== null;
   }
 
-  solicitarRecuperacion(email: string): Observable<{ mensaje: string }> {
+  // Corregido: quita "/auth" de la URL
+solicitarRecuperacion(email: string): Observable<{ mensaje: string }> {
   return this.http.post<{ mensaje: string }>(
-    `${this.apiUrl}/auth/recuperar-password`,
+    `${this.apiUrl}/recuperar-password`,
     { email }
   );
 }
 
 restablecerPassword(token: string, nuevaPassword: string): Observable<{ mensaje: string }> {
   return this.http.post<{ mensaje: string }>(
-    `${this.apiUrl}/auth/reset-password`,
+    `${this.apiUrl}/reset-password`,
     { token, nuevaPassword }
   );
 }

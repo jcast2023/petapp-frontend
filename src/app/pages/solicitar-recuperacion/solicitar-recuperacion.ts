@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service'; // Revisa la ruta exacta de tu AuthService
 
 @Component({
   selector: 'app-solicitar-recuperacion',
@@ -12,6 +13,7 @@ import { RouterLink } from '@angular/router';
 })
 export class SolicitarRecuperacion {
   private fb = inject(FormBuilder);
+  private authService = inject(AuthService); // 1. Inyectamos el servicio
 
   form: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]]
@@ -33,13 +35,16 @@ export class SolicitarRecuperacion {
 
     const { email } = this.form.value;
 
-    // TODO: Conectar con tu servicio AuthService para enviar el correo
-    console.log('Solicitando recuperación para:', email);
-
-    // Simulación de respuesta de API
-    setTimeout(() => {
-      this.loading = false;
-      this.mensajeExito = 'Hemos enviado un enlace de recuperación a tu correo electrónico.';
-    }, 1500);
+    // 2. Llamada real al backend
+    this.authService.solicitarRecuperacion(email).subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.mensajeExito = res.mensaje || 'Hemos enviado un enlace de recuperación a tu correo electrónico.';
+      },
+      error: (err) => {
+        this.loading = false;
+        this.mensajeError = err.error?.mensaje || 'Ocurrió un error al procesar la solicitud.';
+      }
+    });
   }
 }
