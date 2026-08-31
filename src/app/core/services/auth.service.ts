@@ -70,14 +70,25 @@ export class AuthService {
     return localStorage.getItem(this.usuarioKey) !== null;
   }
 
-  // CORREGIDO: Envía el email en el cuerpo como JSON
-  solicitarRecuperacion(email: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/recuperar-password`, { email });
+  // ENVÍA QUERY PARAMS Y RECIBE RESPUESTA DE TEXTO PLANO
+  solicitarRecuperacion(email: string): Observable<string> {
+    const params = new HttpParams().set('email', email);
+    return this.http.post(`${this.apiUrl}/recuperar-password`, null, {
+      params,
+      responseType: 'text'
+    });
   }
 
-  // CORREGIDO: Envía newPassword en el cuerpo para cumplir con ResetPasswordDto
-  restablecerPassword(token: string, newPassword: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/reset-password`, { token, newPassword });
+  // ENVÍA QUERY PARAMS Y RECIBE RESPUESTA DE TEXTO PLANO
+  restablecerPassword(token: string, newPassword: string): Observable<string> {
+    const params = new HttpParams()
+      .set('token', token)
+      .set('newPassword', newPassword);
+
+    return this.http.post(`${this.apiUrl}/reset-password`, null, {
+      params,
+      responseType: 'text'
+    });
   }
 
   cerrarSesion(): void {
