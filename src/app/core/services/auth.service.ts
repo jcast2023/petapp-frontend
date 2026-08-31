@@ -70,20 +70,17 @@ export class AuthService {
     return localStorage.getItem(this.usuarioKey) !== null;
   }
 
-  // Envía SolicitudRecuperacionDto en el BODY como JSON
-  solicitarRecuperacion(email: string): Observable<{ mensaje?: string; message?: string }> {
-    return this.http.post<{ mensaje?: string; message?: string }>(
-      `${this.apiUrl}/recuperar-password`,
-      { email }
-    );
+  // Mapea a SolicitudRecuperacionDto: { email: string }
+  solicitarRecuperacion(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/recuperar-password`, { email });
   }
 
-  // Envía ResetPasswordDto en el BODY como JSON
-  restablecerPassword(token: string, newPassword: string): Observable<{ mensaje?: string; message?: string }> {
-    return this.http.post<{ mensaje?: string; message?: string }>(
-      `${this.apiUrl}/reset-password`,
-      { token, newPassword }
-    );
+  // Mapea exactamente a ResetPasswordDto: { token: string, nuevaPassword: string }
+  restablecerPassword(token: string, nuevaPassword: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/reset-password`, {
+      token,
+      nuevaPassword
+    });
   }
 
   cerrarSesion(): void {

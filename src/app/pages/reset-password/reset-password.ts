@@ -23,8 +23,9 @@ export class ResetPassword implements OnInit {
   mensajeExito = '';
   mensajeError = '';
 
+  // minLength cambiado a 8 para coincidir con el DTO de Spring Boot
   form: FormGroup = this.fb.group({
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
     confirmPassword: ['', [Validators.required]]
   }, { validators: this.passwordMatchValidator });
 
@@ -51,13 +52,11 @@ export class ResetPassword implements OnInit {
     this.mensajeExito = '';
     this.mensajeError = '';
 
-    const newPassword = this.form.value.password;
+    const nuevaPassword = this.form.value.password;
 
-    this.authService.restablecerPassword(this.token, newPassword)
+    this.authService.restablecerPassword(this.token, nuevaPassword)
       .pipe(
-        finalize(() => {
-          this.loading = false;
-        })
+        finalize(() => this.loading = false)
       )
       .subscribe({
         next: (res) => {
