@@ -1,13 +1,23 @@
-.recuperacion-container {
+:host {
+  display: block;
+  width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.solicitar-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   padding: 1rem;
   background-color: #f4f6f9;
+  width: 100%;
 }
 
-.recuperacion-card {
+.solicitar-card {
   width: 100%;
   max-width: 420px;
   padding: 2.5rem;
@@ -42,6 +52,7 @@
   }
 
   input {
+    width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
@@ -95,6 +106,12 @@
   &-success {
     background-color: #dcfce7;
     color: #15803d;
+
+    .sub-text {
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      opacity: 0.85;
+    }
   }
 
   &-danger {
