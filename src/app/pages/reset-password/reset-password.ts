@@ -59,11 +59,11 @@ export class ResetPassword implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          this.mensajeExito = res.mensaje || '¡Tu contraseña ha sido actualizada con éxito!';
+          this.mensajeExito = res?.mensaje || '¡Tu contraseña ha sido actualizada con éxito!';
           setTimeout(() => this.router.navigate(['/login']), 2500);
         },
         error: (err) => {
-          this.mensajeError = err.error?.mensaje || 'El token es inválido o ha expirado. Solicita un nuevo enlace.';
+          this.mensajeError = err.error?.mensaje || err.error?.message || 'El token es inválido o ha expirado. Solicita un nuevo enlace.';
         }
       });
   }

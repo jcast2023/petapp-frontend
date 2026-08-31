@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
@@ -70,19 +70,14 @@ export class AuthService {
     return localStorage.getItem(this.usuarioKey) !== null;
   }
 
-  solicitarRecuperacion(email: string): Observable<{ mensaje: string }> {
-    return this.http.post<{ mensaje: string }>(
-      `${this.apiUrl}/recuperar-password`,
-      { email }
-    );
+  // CORREGIDO: Envía el email en el cuerpo como JSON
+  solicitarRecuperacion(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/recuperar-password`, { email });
   }
 
-  // ✅ CORREGIDO: Se envía 'newPassword' para que coincida con ResetPasswordDto de Java
-  restablecerPassword(token: string, newPassword: string): Observable<{ mensaje: string }> {
-    return this.http.post<{ mensaje: string }>(
-      `${this.apiUrl}/reset-password`,
-      { token, newPassword }
-    );
+  // CORREGIDO: Envía newPassword en el cuerpo para cumplir con ResetPasswordDto
+  restablecerPassword(token: string, newPassword: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/reset-password`, { token, newPassword });
   }
 
   cerrarSesion(): void {

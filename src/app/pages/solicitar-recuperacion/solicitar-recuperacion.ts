@@ -42,10 +42,10 @@ export class SolicitarRecuperacion {
       )
       .subscribe({
         next: (res) => {
-          this.mensajeExito = res.mensaje || 'Hemos enviado un enlace de recuperación a tu correo electrónico.';
+          this.mensajeExito = res?.mensaje || 'Hemos enviado un enlace de recuperación a tu correo electrónico.';
         },
         error: (err) => {
-          this.mensajeError = err.error?.mensaje || 'Ocurrió un error al procesar la solicitud.';
+          this.mensajeError = err.error?.mensaje || err.error?.message || 'Ocurrió un error al procesar la solicitud.';
         }
       });
   }
