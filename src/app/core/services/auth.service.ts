@@ -77,10 +77,11 @@ export class AuthService {
     );
   }
 
-  restablecerPassword(token: string, nuevaPassword: string): Observable<{ mensaje: string }> {
+  // ✅ CORREGIDO: Se envía 'newPassword' para que coincida con ResetPasswordDto de Java
+  restablecerPassword(token: string, newPassword: string): Observable<{ mensaje: string }> {
     return this.http.post<{ mensaje: string }>(
       `${this.apiUrl}/reset-password`,
-      { token, nuevaPassword }
+      { token, newPassword }
     );
   }
 

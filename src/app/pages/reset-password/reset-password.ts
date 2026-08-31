@@ -2,7 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service'; // Ajusta la ruta a tu AuthService
+import { AuthService } from '../../core/services/auth.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-reset-password',
@@ -15,7 +16,7 @@ export class ResetPassword implements OnInit {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private authService = inject(AuthService); // 1. Inyectamos AuthService
+  private authService = inject(AuthService);
 
   token: string | null = null;
   loading = false;
@@ -28,7 +29,6 @@ export class ResetPassword implements OnInit {
   }, { validators: this.passwordMatchValidator });
 
   ngOnInit(): void {
-    // Lee el token desde la URL (ej. /reset-password?token=XYZ)
     this.token = this.route.snapshot.queryParamMap.get('token');
     if (!this.token) {
       this.mensajeError = 'El enlace de recuperación es inválido o ha expirado.';
@@ -53,19 +53,18 @@ export class ResetPassword implements OnInit {
 
     const newPassword = this.form.value.password;
 
-    // 2. Integración real con el método restablecerPassword del backend
-    this.authService.restablecerPassword(this.token, newPassword).subscribe({
-      next: (res) => {
-        this.loading = false;
-        this.mensajeExito = res.mensaje || '¡Tu contraseña ha sido actualizada con éxito!';
-
-        // Redirigir al login después de 2.5 segundos
-        setTimeout(() => this.router.navigate(['/login']), 2500);
-      },
-      error: (err) => {
-        this.loading = false;
-        this.mensajeError = err.error?.mensaje || 'El token es inválido o ha expirado. Solicita un nuevo enlace.';
-      }
-    });
+    this.authService.restablecerPassword(this.token, newPassword)
+      .pipe(
+        finalize(() => this.loading = false)
+      )
+      .subscribe({
+        next: (res) => {
+          this.mensajeExito = res.mensaje || '¡Tu contraseña ha sido actualizada con éxito!';
+          setTimeout(() => this.router.navigate(['/login']), 2500);
+        },
+        error: (err) => {
+          this.mensajeError = err.error?.mensaje || 'El token es inválido o ha expirado. Solicita un nuevo enlace.';
+        }
+      });
   }
 }
