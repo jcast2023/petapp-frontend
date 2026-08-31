@@ -2,17 +2,16 @@
   display: block;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 .auth-page {
   min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 24px;
-  background:
-    linear-gradient(
-      135deg,
-      #fff7ed 0%,
-      #f0fdf4 100%
-    );
+  background: linear-gradient(135deg, #fff7ed 0%, #f0fdf4 100%);
 }
 
 .auth-card {
@@ -50,15 +49,35 @@ h2 {
 }
 
 .form-field {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 7px;
   margin-bottom: 18px;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 label {
   color: #334155;
   font-size: 14px;
   font-weight: 600;
+}
+
+.forgot-link {
+  font-size: 13px;
+  color: #16a34a;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #15803d;
+    text-decoration: underline;
+  }
 }
 
 input {
@@ -77,6 +96,7 @@ input:focus {
 
 small {
   color: #dc2626;
+  font-size: 12px;
 }
 
 button {
@@ -88,6 +108,8 @@ button {
   color: #ffffff;
   cursor: pointer;
   font-weight: 700;
+  font-size: 15px;
+  transition: background-color 0.2s;
 }
 
 button:hover:not(:disabled) {
@@ -106,17 +128,27 @@ button:disabled {
   border-radius: 8px;
   background: #fef2f2;
   color: #b91c1c;
-}
-
-.auth-footer {
-  margin: 24px 0 0;
-  color: #64748b;
-  text-align: center;
   font-size: 14px;
 }
 
-.auth-footer a {
-  color: #15803d;
-  font-weight: 700;
-  text-decoration: none;
+.auth-footer {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 14px;
+
+  a {
+    color: #15803d;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

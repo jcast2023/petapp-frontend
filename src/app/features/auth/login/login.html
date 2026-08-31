@@ -39,7 +39,12 @@
       </div>
 
       <div class="form-field">
-        <label for="contrasena">Contraseña</label>
+        <div class="label-row">
+          <label for="contrasena">Contraseña</label>
+          <a routerLink="/recuperar-password" class="forgot-link">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
 
         <input
           id="contrasena"
@@ -69,12 +74,9 @@
       </button>
     </form>
 
-    <p class="auth-footer">
-      ¿No tienes una cuenta?
+    <footer class="auth-footer">
+      <span>¿No tienes una cuenta?</span>
       <a routerLink="/registro">Crear cuenta</a>
-      <a routerLink="/recuperar-password" class="text-decoration-none small text-primary">
-  ¿Olvidaste tu contraseña?
-</a>
-    </p>
+    </footer>
   </section>
 </main>
