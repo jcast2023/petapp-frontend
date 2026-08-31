@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
@@ -70,25 +70,20 @@ export class AuthService {
     return localStorage.getItem(this.usuarioKey) !== null;
   }
 
-  // ENVÍA QUERY PARAMS Y RECIBE RESPUESTA DE TEXTO PLANO
-  solicitarRecuperacion(email: string): Observable<string> {
-    const params = new HttpParams().set('email', email);
-    return this.http.post(`${this.apiUrl}/recuperar-password`, null, {
-      params,
-      responseType: 'text'
-    });
+  // Envía SolicitudRecuperacionDto en el BODY como JSON
+  solicitarRecuperacion(email: string): Observable<{ mensaje?: string; message?: string }> {
+    return this.http.post<{ mensaje?: string; message?: string }>(
+      `${this.apiUrl}/recuperar-password`,
+      { email }
+    );
   }
 
-  // ENVÍA QUERY PARAMS Y RECIBE RESPUESTA DE TEXTO PLANO
-  restablecerPassword(token: string, newPassword: string): Observable<string> {
-    const params = new HttpParams()
-      .set('token', token)
-      .set('newPassword', newPassword);
-
-    return this.http.post(`${this.apiUrl}/reset-password`, null, {
-      params,
-      responseType: 'text'
-    });
+  // Envía ResetPasswordDto en el BODY como JSON
+  restablecerPassword(token: string, newPassword: string): Observable<{ mensaje?: string; message?: string }> {
+    return this.http.post<{ mensaje?: string; message?: string }>(
+      `${this.apiUrl}/reset-password`,
+      { token, newPassword }
+    );
   }
 
   cerrarSesion(): void {

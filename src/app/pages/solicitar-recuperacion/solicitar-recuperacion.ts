@@ -38,14 +38,16 @@ export class SolicitarRecuperacion {
 
     this.authService.solicitarRecuperacion(email)
       .pipe(
-        finalize(() => this.loading = false)
+        finalize(() => {
+          this.loading = false;
+        })
       )
       .subscribe({
-        next: (res: string) => {
-          this.mensajeExito = res || 'Enlace enviado con éxito a tu correo electrónico.';
+        next: (res) => {
+          this.mensajeExito = res?.mensaje || res?.message || 'Hemos enviado un enlace de recuperación a tu correo electrónico.';
         },
         error: (err) => {
-          this.mensajeError = err.error || 'Ocurrió un error al procesar la solicitud.';
+          this.mensajeError = err.error?.mensaje || err.error?.message || 'Ocurrió un error al procesar la solicitud.';
         }
       });
   }
