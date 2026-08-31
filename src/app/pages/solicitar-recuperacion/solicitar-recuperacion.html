@@ -1,5 +1,5 @@
-<div class="recuperacion-container">
-  <div class="recuperacion-card">
+<div class="solicitar-container">
+  <div class="solicitar-card">
     <h2>Recuperar Contraseña</h2>
     <p class="description">
       Ingresa tu correo electrónico registrado y te enviaremos un enlace para restablecer tu contraseña.
@@ -8,6 +8,7 @@
     @if (mensajeExito) {
       <div class="alert alert-success">
         {{ mensajeExito }}
+        <p class="sub-text">Redirigiendo al inicio de sesión...</p>
       </div>
     }
 
@@ -31,11 +32,11 @@
           <small class="error-text">El correo es obligatorio.</small>
         }
         @if (form.get('email')?.touched && form.get('email')?.hasError('email')) {
-          <small class="error-text">Ingresa un correo electrónico válido.</small>
+          <small class="error-text">Ingresa un correo válido.</small>
         }
       </div>
 
-      <button type="submit" [disabled]="loading || form.invalid" class="btn-primary">
+      <button type="submit" [disabled]="loading || form.invalid || mensajeExito" class="btn-primary">
         {{ loading ? 'Enviando...' : 'Enviar enlace' }}
       </button>
     </form>

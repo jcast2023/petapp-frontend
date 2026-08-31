@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { finalize } from 'rxjs/operators';
 
@@ -15,14 +15,15 @@ import { finalize } from 'rxjs/operators';
 export class SolicitarRecuperacion {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-
-  form: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]]
-  });
+  private router = inject(Router);
 
   loading = false;
   mensajeExito = '';
   mensajeError = '';
+
+  form: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]]
+  });
 
   onSubmit(): void {
     if (this.form.invalid) {
@@ -38,16 +39,19 @@ export class SolicitarRecuperacion {
 
     this.authService.solicitarRecuperacion(email)
       .pipe(
-        finalize(() => {
-          this.loading = false;
-        })
+        finalize(() => this.loading = false)
       )
       .subscribe({
-        next: (res) => {
+        next: (res: any) => {
           this.mensajeExito = res?.mensaje || res?.message || 'Hemos enviado un enlace de recuperación a tu correo electrónico.';
+          this.form.reset();
+
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 3500);
         },
-        error: (err) => {
-          this.mensajeError = err.error?.mensaje || err.error?.message || 'Ocurrió un error al procesar la solicitud.';
+        error: (err: any) => {
+          this.mensajeError = err.error?.mensaje || err.error?.message || 'Ocurrió un error al procesar la solicitud. Inténtalo de nuevo.';
         }
       });
   }

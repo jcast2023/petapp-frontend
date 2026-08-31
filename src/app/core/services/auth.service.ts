@@ -31,7 +31,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, datos, {
       withCredentials: true
     }).pipe(
-      tap(response => this.guardarSesion(response))
+      tap((response: AuthResponse) => this.guardarSesion(response))
     );
   }
 
@@ -39,7 +39,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/registro`, datos, {
       withCredentials: true
     }).pipe(
-      tap(response => this.guardarSesion(response))
+      tap((response: AuthResponse) => this.guardarSesion(response))
     );
   }
 
@@ -70,12 +70,10 @@ export class AuthService {
     return localStorage.getItem(this.usuarioKey) !== null;
   }
 
-  // Mapea a SolicitudRecuperacionDto: { email: string }
   solicitarRecuperacion(email: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/recuperar-password`, { email });
   }
 
-  // Mapea exactamente a ResetPasswordDto: { token: string, nuevaPassword: string }
   restablecerPassword(token: string, nuevaPassword: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/reset-password`, {
       token,
